@@ -11,9 +11,11 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
 			<ul class="nav navbar-nav">
-				<li><a href="<?php echo INST_ROOT_URL; ?>">Home</a></li>
-				<li><a href="<?php echo INST_PRGMS_URL; ?>">My Programs</a></li>
-				<li><a href="<?php echo INST_PAGES_URL; ?>">My Pages</a></li>
+				<li><a href="<?php echo ROOT_URL; ?>">Home</a></li>
+				<li><a href="<?php echo ROOT_URL; ?>">Account</a></li>
+				<li><a href="<?php echo ROOT_URL; ?>">Pages</a></li>
+				<li><a href="<?php echo ROOT_URL; ?>">My Fitness Programs</a></li>
+				<li><a href="<?php echo ROOT_URL; ?>">Add New Program</a></li>
 			</ul>
 		</div><!--/.nav-collapse -->
      </div>
