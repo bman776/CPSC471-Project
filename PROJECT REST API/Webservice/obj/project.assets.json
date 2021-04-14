@@ -1,0 +1,124 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETCoreApp,Version=v3.0": {
+      "BusinessLibrary/1.0.0": {
+        "type": "project",
+        "framework": "Unsupported,Version=v0.0",
+        "compile": {
+          "bin/placeholder/BusinessLibrary.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/BusinessLibrary.dll": {}
+        }
+      },
+      "DatabaseLibrary/1.0.0": {
+        "type": "project",
+        "framework": "Unsupported,Version=v0.0",
+        "compile": {
+          "bin/placeholder/DatabaseLibrary.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/DatabaseLibrary.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "BusinessLibrary/1.0.0": {
+      "type": "project",
+      "path": "../BusinessLibrary/BusinessLibrary.csproj",
+      "msbuildProject": "../BusinessLibrary/BusinessLibrary.csproj"
+    },
+    "DatabaseLibrary/1.0.0": {
+      "type": "project",
+      "path": "../DatabaseLibrary/DatabaseLibrary.csproj",
+      "msbuildProject": "../DatabaseLibrary/DatabaseLibrary.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    ".NETCoreApp,Version=v3.0": [
+      "BusinessLibrary >= 1.0.0",
+      "DatabaseLibrary >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\JFH\\.nuget\\packages\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "D:\\Users\\JFH\\source\\repos\\git\\PROJECT REST API\\Webservice\\Webservice.csproj",
+      "projectName": "Webservice",
+      "projectPath": "D:\\Users\\JFH\\source\\repos\\git\\PROJECT REST API\\Webservice\\Webservice.csproj",
+      "packagesPath": "C:\\Users\\JFH\\.nuget\\packages\\",
+      "outputPath": "D:\\Users\\JFH\\source\\repos\\git\\PROJECT REST API\\Webservice\\obj\\",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "C:\\Users\\JFH\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "netcoreapp3.0"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "netcoreapp3.0": {
+          "targetAlias": "netcoreapp3.0",
+          "projectReferences": {
+            "D:\\Users\\JFH\\source\\repos\\git\\PROJECT REST API\\BusinessLibrary\\BusinessLibrary.csproj": {
+              "projectPath": "D:\\Users\\JFH\\source\\repos\\git\\PROJECT REST API\\BusinessLibrary\\BusinessLibrary.csproj"
+            },
+            "D:\\Users\\JFH\\source\\repos\\git\\PROJECT REST API\\DatabaseLibrary\\DatabaseLibrary.csproj": {
+              "projectPath": "D:\\Users\\JFH\\source\\repos\\git\\PROJECT REST API\\DatabaseLibrary\\DatabaseLibrary.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "netcoreapp3.0": {
+        "targetAlias": "netcoreapp3.0",
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
+      }
+    }
+  },
+  "logs": [
+    {
+      "code": "NU1201",
+      "level": "Error",
+      "message": "Project BusinessLibrary is not compatible with netcoreapp3.0 (.NETCoreApp,Version=v3.0). Project BusinessLibrary supports: netcoreapp3.1 (.NETCoreApp,Version=v3.1)",
+      "libraryId": "BusinessLibrary",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.0"
+      ]
+    },
+    {
+      "code": "NU1201",
+      "level": "Error",
+      "message": "Project DatabaseLibrary is not compatible with netcoreapp3.0 (.NETCoreApp,Version=v3.0). Project DatabaseLibrary supports: netcoreapp3.1 (.NETCoreApp,Version=v3.1)",
+      "libraryId": "DatabaseLibrary",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.0"
+      ]
+    }
+  ]
+}
