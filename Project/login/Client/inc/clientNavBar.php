@@ -1,6 +1,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="https://bootswatch.com/3/cerulean/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+<?php $dir_name = dirname($_SERVER['PHP_SELF']); 
+
+?>
 <nav class="navbar navbar-default">
      <div class="container">
         <div class="navbar-header">
@@ -20,8 +23,8 @@
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Logs <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">My Logs</a></li>
-                    <li><a href="#">Add New Log</a></li>
+                    <li><a href="<?php echo $dir_name . "/" . "myLogs.php";?>">My Logs</a></li>
+                    <li><a href="<?php echo $dir_name . "/" . "addLog.php";?>">Add New Log</a></li>
                 </ul>
             </li>
             <li class="dropdown">
