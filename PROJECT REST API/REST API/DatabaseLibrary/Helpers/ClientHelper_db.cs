@@ -29,7 +29,7 @@ namespace DatabaseLibrary.Helpers
                 // Generate a new instance
                 Client_db instance = new Client_db
                     (
-                        id: Guid.NewGuid().ToString(), //This can be ignored is PK in your DB is auto increment
+                        id: Convert.ToInt32(Guid.NewGuid()), //This can be ignored is PK in your DB is auto increment
                         firstName, lastName,
                         weight, height,
                         cv, bfp
@@ -91,7 +91,7 @@ namespace DatabaseLibrary.Helpers
                 foreach (DataRow row in table.Rows)
                     instances.Add(new Client_db
                             (
-                                id: row["id"].ToString(),
+                                id: Convert.ToInt32(row["id"]),
                                 firstName: row["first_name"].ToString(), 
                                 lastName: row["last_name"].ToString(),
                                 weight: Convert.ToDouble(row["weight"]),
@@ -99,6 +99,51 @@ namespace DatabaseLibrary.Helpers
                                 cv: Convert.ToDouble(row["cv"]),
                                 bfp: Convert.ToDouble(row["bfp"])
                             )
+                        );
+
+                // Return value
+                statusResponse = new StatusResponse("Clients list has been retrieved successfully.");
+                return instances;
+            }
+            catch (Exception exception)
+            {
+                statusResponse = new StatusResponse(exception);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Retrieves specific instance
+        /// </summary>
+        public static Client_db GetClient( int id,
+            DbContext context, out StatusResponse statusResponse)
+        {
+            try
+            {
+                // Get from database
+                DataTable table = context.ExecuteDataQueryCommand
+                    (
+                        commandText: "SELECT * FROM clients WHERE id = @id",
+                        parameters: new Dictionary<string, object>()
+                        {
+                            { "@id", id },
+                        },
+                        message: out string message
+                    );
+                if (table == null)
+                    throw new Exception(message);
+
+                // Parse data
+                Client_db instances = new Client_db();
+                foreach (DataRow row in table.Rows)
+                        instances = new Client_db (
+                                id: Convert.ToInt32(row["id"]),
+                                firstName: row["first_name"].ToString(),
+                                lastName: row["last_name"].ToString(),
+                                weight: Convert.ToDouble(row["weight"]),
+                                height: Convert.ToDouble(row["height"]),
+                                cv: Convert.ToDouble(row["cv"]),
+                                bfp: Convert.ToDouble(row["bfp"])
                         );
 
                 // Return value
