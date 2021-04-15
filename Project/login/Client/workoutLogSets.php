@@ -1,6 +1,6 @@
 <?php
-	require('../../config/config.php');
-	require('../../config/db.php');
+	require('../config/config.php');
+	require('../config/db.php');
 
     //get session
 	session_start();

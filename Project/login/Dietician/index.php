@@ -8,4 +8,4 @@
 		<h1>Dietician</h1>
 		
 	</div>
-<?php include('inc/footer.php'); ?>
+<?php include('../inc/footer.php'); ?>

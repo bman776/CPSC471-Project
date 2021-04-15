@@ -1,6 +1,6 @@
 <?php
-	require('../../config/config.php');
-	require('../../config/db.php');
+	require('../config/config.php');
+	require('../config/db.php');
 ?>
 
 <?php $dir_name = dirname($_SERVER['PHP_SELF']); ?>

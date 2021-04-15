@@ -1,3 +1,4 @@
+<?php $dir_name = dirname($_SERVER['PHP_SELF']); ?>
 <nav class="navbar navbar-default">
      <div class="container">
         <div class="navbar-header">
@@ -14,8 +15,8 @@
             <li><a href="<?php echo ROOT_URL; ?>">Home</a></li>
             <li><a href="<?php echo ROOT_URL; ?>">Account</a></li>
             <li><a href="<?php echo ROOT_URL; ?>">Pages</a></li>
-			<li><a href="<?php echo ROOT_URL; ?>">My Nutrition Plans</a></li>
-            <li><a href="<?php echo ROOT_URL; ?>">Add New Plan</a></li>
+			      <li><a href="<?php echo ROOT_URL; ?>">My Nutrition Plans</a></li>
+            <li><a href="<?php echo $dir_name . "/" . "addPlan.php";?>">Add New Plan</a></li>
           </ul>
         </div><!--/.nav-collapse -->
      </div>
