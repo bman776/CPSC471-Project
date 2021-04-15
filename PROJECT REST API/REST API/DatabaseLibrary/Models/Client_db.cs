@@ -19,15 +19,16 @@ namespace DatabaseLibrary.Models
         /// <summary>
         /// Fields constructor.
         /// </summary>
-        public Client_db(int id, string firstName, string lastName, double weight, double height, double cv, double bfp)
+        public Client_db(int id, string firstName, string lastName, double weight, double height, double waistCircumference, double hipCircumference, double neckCircumference)
         {
             Id = id;
             FirstName = firstName;
             LastName = lastName;
             Weight = weight;
             Height = height;
-            Cv = cv;
-            Bfp = bfp;
+            WaistCircumference = waistCircumference;
+            HipCircumference = hipCircumference;
+            NeckCircumference = neckCircumference;
         }
 
         #endregion
@@ -40,22 +41,39 @@ namespace DatabaseLibrary.Models
         public int Id { get; set; }
 
         /// <summary>
-        /// First name used of the student.
+        /// First name used of the client.
         /// </summary>
         public string FirstName { get; set; }
 
         /// <summary>
-        /// Last name used of the student.
+        /// Last name used of the client.
         /// </summary>
         public string LastName { get; set; }
 
+        /// <summary>
+        /// Weight of the client.
+        /// </summary>
         public double Weight { get; set; }
 
+        /// <summary>
+        /// Height of the client.
+        /// </summary>
         public double Height { get; set; }
 
-        public double Cv { get; set; }
+        /// <summary>
+        /// Waist Circumference of the client.
+        /// </summary>
+        public double WaistCircumference { get; set; }
 
-        public double Bfp { get; set; }
+        /// <summary>
+        /// Hip Circumference of the client.
+        /// </summary>
+        public double HipCircumference { get; set; }
+
+        /// <summary>
+        /// Neck Circumference of the client.
+        /// </summary>
+        public double NeckCircumference { get; set; }
 
         #endregion
 

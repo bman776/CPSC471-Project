@@ -53,7 +53,7 @@ namespace Webservice.Controllers
         // Gets collection.
         [HttpGet]
         [Route("GetClients")]
-        public ResponseMessage GetStudents()
+        public ResponseMessage GetClients()
         {
             var response = ClientHelper.GetCollection(
                 context: Database.DbContext,
@@ -66,7 +66,7 @@ namespace Webservice.Controllers
         // Adds a new instance.
         [HttpPost]
         [Route("AddClient")]
-        public ResponseMessage AddStudent([FromBody] JObject data)
+        public ResponseMessage AddClient([FromBody] JObject data)
         {
 
             var response = ClientHelper.Add(data,

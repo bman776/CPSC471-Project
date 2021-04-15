@@ -22,7 +22,7 @@ namespace Webservice.ControllerHelpers
         {
             if (instance == null)
                 return null;
-            return new BusinessLibrary.Models.Client(instance.Id, instance.FirstName, instance.LastName);
+            return new BusinessLibrary.Models.Client(instance.Id, instance.FirstName, instance.LastName, instance.Weight, instance.Height, instance.WaistCircumference, instance.HipCircumference, instance.NeckCircumference);
         }
 
         #endregion
@@ -38,12 +38,13 @@ namespace Webservice.ControllerHelpers
             string firstName = (data.ContainsKey("firstName")) ? data.GetValue("firstName").Value<string>() : null;
             string lastName = (data.ContainsKey("lastName")) ? data.GetValue("lastName").Value<string>() : null;
             double weight = (data.ContainsKey("weight")) ? data.GetValue("weight").Value<double>() : 0.0;
-            double height = (data.ContainsKey("height")) ? data.GetValue("weight").Value<double>() : 0.0;
-            double cv = (data.ContainsKey("cv")) ? data.GetValue("cv").Value<double>() : 0.0;
-            double bfp = (data.ContainsKey("bfp")) ? data.GetValue("bfp").Value<double>() : 0.0;
+            double height = (data.ContainsKey("height")) ? data.GetValue("height").Value<double>() : 0.0;
+            double waistCircumference = (data.ContainsKey("waistCircumference")) ? data.GetValue("waistCircumference").Value<double>() : 0.0;
+            double hipCircumference = (data.ContainsKey("hipCircumference")) ? data.GetValue("hipCircumference").Value<double>() : 0.0;
+            double neckCircumference = (data.ContainsKey("neckCircumference")) ? data.GetValue("neckCircumference").Value<double>() : 0.0;
 
             // Add instance to database
-            var dbInstance = DatabaseLibrary.Helpers.ClientHelper_db.Add(firstName, lastName, weight, height, cv, bfp,
+            var dbInstance = DatabaseLibrary.Helpers.ClientHelper_db.Add(firstName, lastName, weight, height, waistCircumference, hipCircumference, neckCircumference,
                 context, out StatusResponse statusResponse);
 
             // Get rid of detailed internal server error message (when requested)

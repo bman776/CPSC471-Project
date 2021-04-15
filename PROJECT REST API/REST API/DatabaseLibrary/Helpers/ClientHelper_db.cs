@@ -15,7 +15,7 @@ namespace DatabaseLibrary.Helpers
         /// <summary>
         /// Adds a new instance into the database.
         /// </summary>
-        public static Client_db Add(string firstName, string lastName, double weight, double height, double cv, double bfp,
+        public static Client_db Add(string firstName, string lastName, double weight, double height, double waistCircumference, double hipCircumference, double neckCircumference,
             DbContext context, out StatusResponse statusResponse)
         {
             try
@@ -32,13 +32,13 @@ namespace DatabaseLibrary.Helpers
                         id: Convert.ToInt32(Guid.NewGuid()), //This can be ignored is PK in your DB is auto increment
                         firstName, lastName,
                         weight, height,
-                        cv, bfp
+                        waistCircumference, hipCircumference, neckCircumference
                     );
 
                 // Add to database
                 int rowsAffected = context.ExecuteNonQueryCommand
                     (
-                        commandText: "INSERT INTO clients (id, first_name, last_name, weight, height, cv, bfp) values (@id, @first_name, @last_name, @weight, @height, @cv, @bfp)",
+                        commandText: "INSERT INTO clients (id, first_name, last_name, weight, height, waistCircumference, hipCircumference, neckCircumference) values (@id, @first_name, @last_name, @weight, @height, @waist_circumference, @hip_circumference, @neck_circumference)",
                         parameters: new Dictionary<string, object>()
                         {
                             { "@id", instance.Id },
@@ -46,8 +46,9 @@ namespace DatabaseLibrary.Helpers
                             { "@last_name", instance.LastName },
                             { "@weight", instance.Weight },
                             { "@height", instance.Height },
-                            { "@cv", instance.Cv },
-                            { "@bfp", instance.Bfp }
+                            { "@waist_circumference", instance.WaistCircumference },
+                            { "@hip_circumference", instance.HipCircumference },
+                            { "@neck_circumference", instance.NeckCircumference }
                         },
                         message: out string message
                     );
@@ -96,8 +97,9 @@ namespace DatabaseLibrary.Helpers
                                 lastName: row["last_name"].ToString(),
                                 weight: Convert.ToDouble(row["weight"]),
                                 height: Convert.ToDouble(row["height"]),
-                                cv: Convert.ToDouble(row["cv"]),
-                                bfp: Convert.ToDouble(row["bfp"])
+                                waistCircumference: Convert.ToDouble(row["waist_circumference"]),
+                                hipCircumference: Convert.ToDouble(row["hip_circumference"]),
+                                neckCircumference: Convert.ToDouble(row["neck_circumference"])
                             )
                         );
 
@@ -142,8 +144,9 @@ namespace DatabaseLibrary.Helpers
                                 lastName: row["last_name"].ToString(),
                                 weight: Convert.ToDouble(row["weight"]),
                                 height: Convert.ToDouble(row["height"]),
-                                cv: Convert.ToDouble(row["cv"]),
-                                bfp: Convert.ToDouble(row["bfp"])
+                                waistCircumference: Convert.ToDouble(row["waist_circumference"]),
+                                hipCircumference: Convert.ToDouble(row["hip_circumference"]),
+                                neckCircumference: Convert.ToDouble(row["neck_circumference"])
                         );
 
                 // Return value

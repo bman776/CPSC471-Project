@@ -22,15 +22,16 @@ namespace BusinessLibrary.Models
         /// <summary>
         /// Fields constructor.
         /// </summary>
-        public Client(int id, string firstName, string lastName, double weight, double height, double cv, double bfp)
+        public Client(int id, string firstName, string lastName, double weight, double height, double waistCircumference, double hipCircumference, double neckCircumference)
         {
             Id = id;
             FirstName = firstName;
             LastName = lastName;
             Weight = weight;
             Height = height;
-            Cv = cv;
-            Bfp = bfp;
+            WaistCircumference = waistCircumference;
+            HipCircumference = hipCircumference;
+            NeckCircumference = neckCircumference;
         }
 
         /// <summary>
@@ -38,7 +39,7 @@ namespace BusinessLibrary.Models
         /// </summary>
         /// <param name="instance">The object to clone from.</param>
         public Client(Client instance)
-            : this(instance.Id, instance.FirstName, instance.LastName, instance.Weight, instance.Height, instance.Cv, instance.Bfp)
+            : this(instance.Id, instance.FirstName, instance.LastName, instance.Weight, instance.Height, instance.WaistCircumference, instance.HipCircumference, instance.NeckCircumference)
         {
         }
 
@@ -77,16 +78,22 @@ namespace BusinessLibrary.Models
         public double Height { get; set; }
 
         /// <summary>
-        /// CV of the client.
+        /// Waist Circumference of the client
         /// </summary>
-        [JsonProperty(PropertyName = "cv")]
-        public double Cv { get; set; }
+        [JsonProperty(PropertyName = "waistCircumference")]
+        public double WaistCircumference { get; set; }
 
         /// <summary>
-        /// Body Fat Percentage of the client.
+        /// Hip Circumference of the client
         /// </summary>
-        [JsonProperty(PropertyName = "bfp")]
-        public double Bfp { get; set; }
+        [JsonProperty(PropertyName = "hipCircumference")]
+        public double HipCircumference { get; set; }
+
+        /// <summary>
+        /// Hip Circumference of the client
+        /// </summary>
+        [JsonProperty(PropertyName = "neckCircumference")]
+        public double NeckCircumference { get; set; }
 
         /// <summary>
         /// FUll name of the client.
