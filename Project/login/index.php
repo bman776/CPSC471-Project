@@ -1,11 +1,32 @@
 <?php
 	require('config/config.php');
 	require('config/db.php');
-	
+
 	if ( isset($_POST['username']) and isset($_POST['password']) ) {
+
 		//http://localhost/Project/Login/Instructor/
-		$loc = INST_ROOT_URL;
-		header("Location:$loc");
+		//$loc = INST_ROOT_URL;
+		//header("Location:$loc");
+		$usrnm = $_POST['username'];
+		$psswd = $_POST['password'];
+
+		$query = "SELECT u.username, u.password FROM user AS u WHERE u.username = '$usrnm' AND u.password = '$psswd'";
+		$query2 = "SELECT * FROM user";
+
+		$result = mysqli_query($conn, $query);
+		
+		if (!$result) {
+			echo "Query Error: " . mysqli_error($conn);
+		} else {
+			$result_row_count = mysqli_num_rows($result);
+			if ($result_row_count > 0) {
+				echo "You are in the System!";
+				$loc = CLIENT_ROOT_URL;
+				header("Location:$loc");
+			} else {
+				echo "Invalid Username or Password";
+			}
+		}
 	}
 ?>
 
