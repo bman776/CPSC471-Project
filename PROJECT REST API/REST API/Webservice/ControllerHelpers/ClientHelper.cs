@@ -22,7 +22,7 @@ namespace Webservice.ControllerHelpers
         {
             if (instance == null)
                 return null;
-            return new BusinessLibrary.Models.Client(instance.Id, instance.FirstName, instance.LastName, instance.Weight, instance.Height, instance.WaistCircumference, instance.HipCircumference, instance.NeckCircumference);
+            return new BusinessLibrary.Models.Client(instance.Id, instance.Dob, instance.FirstName, instance.LastName, instance.Weight, instance.Height, instance.WaistCircumference, instance.HipCircumference, instance.NeckCircumference);
         }
 
         #endregion
@@ -35,6 +35,7 @@ namespace Webservice.ControllerHelpers
             DbContext context, out HttpStatusCode statusCode, bool includeDetailedErrors = false)
         {
             // Extract paramters
+            DateTime dob = (data.ContainsKey("dob")) ? data.GetValue("dob").Value<DateTime>() : DateTime.MinValue;
             string firstName = (data.ContainsKey("firstName")) ? data.GetValue("firstName").Value<string>() : null;
             string lastName = (data.ContainsKey("lastName")) ? data.GetValue("lastName").Value<string>() : null;
             double weight = (data.ContainsKey("weight")) ? data.GetValue("weight").Value<double>() : 0.0;
@@ -44,7 +45,7 @@ namespace Webservice.ControllerHelpers
             double neckCircumference = (data.ContainsKey("neckCircumference")) ? data.GetValue("neckCircumference").Value<double>() : 0.0;
 
             // Add instance to database
-            var dbInstance = DatabaseLibrary.Helpers.ClientHelper_db.Add(firstName, lastName, weight, height, waistCircumference, hipCircumference, neckCircumference,
+            var dbInstance = DatabaseLibrary.Helpers.ClientHelper_db.Add(dob, firstName, lastName, weight, height, waistCircumference, hipCircumference, neckCircumference,
                 context, out StatusResponse statusResponse);
 
             // Get rid of detailed internal server error message (when requested)

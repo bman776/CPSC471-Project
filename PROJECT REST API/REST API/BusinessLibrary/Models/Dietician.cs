@@ -1,4 +1,3 @@
-﻿using Nest;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -6,40 +5,40 @@ using System.Text;
 
 namespace BusinessLibrary.Models
 {
-    public class Client
+    class Dietician
     {
-
         #region Contructors
 
         /// <summary>
         /// Default constructor. 
         /// Need for serialization purposes.
         /// </summary>
-        public Client()
+        public Dietician()
         {
         }
 
         /// <summary>
         /// Fields constructor.
         /// </summary>
-        public Client(int id, DateTime dob, string firstName, string lastName, double weight, double height, double waistCircumference, double hipCircumference, double neckCircumference)
+        public Dietician(int id, DateTime dob, string firstName, string lastName, string practice, string doctorate, string bachelorsDegree, string associateDegree, string certification)
         {
             Id = id;
+            Dob = dob;
             FirstName = firstName;
             LastName = lastName;
-            Weight = weight;
-            Height = height;
-            WaistCircumference = waistCircumference;
-            HipCircumference = hipCircumference;
-            NeckCircumference = neckCircumference;
+            Practice = practice;
+            Doctorate = doctorate;
+            BachelorsDegree = bachelorsDegree;
+            AssociateDegree = associateDegree;
+            Certification = certification;
         }
 
         /// <summary>
         /// Clone/Copy constructor.
         /// </summary>
         /// <param name="instance">The object to clone from.</param>
-        public Client(Client instance)
-            : this(instance.Id, instance.Dob, instance.FirstName, instance.LastName, instance.Weight, instance.Height, instance.WaistCircumference, instance.HipCircumference, instance.NeckCircumference)
+        public Dietician(Dietician instance)
+            : this(instance.Id, instance.Dob, instance.FirstName, instance.LastName, instance.Practice, instance.Doctorate, instance.BachelorsDegree, instance.AssociateDegree, instance.Certification)
         {
         }
 
@@ -53,10 +52,7 @@ namespace BusinessLibrary.Models
         [JsonProperty(PropertyName = "id")]
         public int Id { get; set; }
 
-        /// <summary>
-        /// date of birth of client
-        /// </summary>
-        [JsonProperty(PropertyName = "dob")]
+        [JsonProperty(PropertyName = "id")]
         public DateTime Dob { get; set; }
 
         /// <summary>
@@ -72,34 +68,34 @@ namespace BusinessLibrary.Models
         public string LastName { get; set; }
 
         /// <summary>
-        /// Weight of the client.
+        /// Instructor's training type
         /// </summary>
-        [JsonProperty(PropertyName = "weight")]
-        public double Weight { get; set; }
+        [JsonProperty(PropertyName = "practice")]
+        public string Practice { get; set; }
 
         /// <summary>
-        /// Height of the client.
+        /// Instructor's training philosophy
         /// </summary>
-        [JsonProperty(PropertyName = "height")]
-        public double Height { get; set; }
+        [JsonProperty(PropertyName = "Doctorate")]
+        public string Doctorate { get; set; }
 
         /// <summary>
-        /// Waist Circumference of the client
+        /// Instructor's exercise modality
         /// </summary>
-        [JsonProperty(PropertyName = "waistCircumference")]
-        public double WaistCircumference { get; set; }
+        [JsonProperty(PropertyName = "bachelorsDegree")]
+        public string BachelorsDegree { get; set; }
 
         /// <summary>
-        /// Hip Circumference of the client
+        /// Instructor's number of clientele
         /// </summary>
-        [JsonProperty(PropertyName = "hipCircumference")]
-        public double HipCircumference { get; set; }
+        [JsonProperty(PropertyName = "associateDegree")]
+        public string AssociateDegree { get; set; }
 
         /// <summary>
-        /// Hip Circumference of the client
+        /// Instructor's credentials/accreditation
         /// </summary>
-        [JsonProperty(PropertyName = "neckCircumference")]
-        public double NeckCircumference { get; set; }
+        [JsonProperty(PropertyName = "certification")]
+        public string Certification { get; set; }
 
         /// <summary>
         /// FUll name of the client.
@@ -126,6 +122,5 @@ namespace BusinessLibrary.Models
         }
 
         #endregion
-
     }
 }

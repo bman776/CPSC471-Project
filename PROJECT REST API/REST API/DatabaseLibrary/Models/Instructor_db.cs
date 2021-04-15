@@ -19,9 +19,10 @@ namespace DatabaseLibrary.Models
         /// <summary>
         /// Fields constructor.
         /// </summary>
-        public Instructor_db(string id, string firstName, string lastName, string trainingType, string trainingPhilosophy, string exerciseModality, int clientPopulation, string accreditation)
+        public Instructor_db(int id, DateTime dob, string firstName, string lastName, string trainingType, string trainingPhilosophy, string exerciseModality, int clientPopulation, string accreditation)
         {
             Id = id;
+            Dob = dob;
             FirstName = firstName;
             LastName = lastName;
             TrainingType = trainingType;
@@ -36,7 +37,9 @@ namespace DatabaseLibrary.Models
 
         #region Properties
 
-        public string Id { get; set; }
+        public int Id { get; set; }
+
+        public DateTime Dob { get; set; }
 
         public string FirstName { get; set; }
 

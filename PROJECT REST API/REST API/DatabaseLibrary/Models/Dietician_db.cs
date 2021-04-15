@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace DatabaseLibrary.Models
 {
-    public class Client_db
+    public class Dietician_db
     {
 
         #region Constructors
@@ -12,24 +12,24 @@ namespace DatabaseLibrary.Models
         /// <summary>
         /// Default constructor.
         /// </summary>
-        public Client_db()
+        public Dietician_db()
         {
         }
 
         /// <summary>
         /// Fields constructor.
         /// </summary>
-        public Client_db(int id, DateTime dob, string firstName, string lastName, double weight, double height, double waistCircumference, double hipCircumference, double neckCircumference)
+        public Dietician_db(int id, DateTime dob, string firstName, string lastName, string practice, string doctorate, string bachelorsDegree, string associatesDegree, string certification)
         {
             Id = id;
             Dob = dob;
             FirstName = firstName;
             LastName = lastName;
-            Weight = weight;
-            Height = height;
-            WaistCircumference = waistCircumference;
-            HipCircumference = hipCircumference;
-            NeckCircumference = neckCircumference;
+            Practice = practice;
+            Doctorate = doctorate;
+            BachelorsDegree = bachelorsDegree;
+            AssociatesDegree = associatesDegree;
+            Certification = certification;
         }
 
         #endregion
@@ -41,9 +41,6 @@ namespace DatabaseLibrary.Models
         /// </summary>
         public int Id { get; set; }
 
-        /// <summary>
-        /// Date of birth of client
-        /// </summary>
         public DateTime Dob { get; set; }
 
         /// <summary>
@@ -59,27 +56,27 @@ namespace DatabaseLibrary.Models
         /// <summary>
         /// Weight of the client.
         /// </summary>
-        public double Weight { get; set; }
+        public string Practice { get; set; }
 
         /// <summary>
         /// Height of the client.
         /// </summary>
-        public double Height { get; set; }
+        public string Doctorate { get; set; }
 
         /// <summary>
         /// Waist Circumference of the client.
         /// </summary>
-        public double WaistCircumference { get; set; }
+        public string BachelorsDegree { get; set; }
 
         /// <summary>
         /// Hip Circumference of the client.
         /// </summary>
-        public double HipCircumference { get; set; }
+        public string AssociatesDegree { get; set; }
 
         /// <summary>
         /// Neck Circumference of the client.
         /// </summary>
-        public double NeckCircumference { get; set; }
+        public string Certification { get; set; }
 
         #endregion
 

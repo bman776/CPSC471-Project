@@ -1,4 +1,4 @@
-﻿using DatabaseLibrary.Core;
+using DatabaseLibrary.Core;
 using DatabaseLibrary.Models;
 using System;
 using System.Collections.Generic;
@@ -9,58 +9,57 @@ using System.Text;
 
 namespace DatabaseLibrary.Helpers
 {
-    class InstructorHelper_db
+    public class DieticianHelper_db
     {
-
         /// <summary>
         /// Adds a new instance into the database.
         /// </summary>
-        public static Instructor_db Add(DateTime dob, string firstName, string lastName, string trainingType,
-            string trainingPhilosophy, string exerciseModality, int clientPopulation, string accreditation,
+        public static Dietician_db Add(DateTime dob, string firstName, string lastName, string practice, string doctorate, string bachelorsDegree, string associateDegree, string certification,
             DbContext context, out StatusResponse statusResponse)
         {
             try
             {
+                //validate
                 if (string.IsNullOrEmpty(firstName?.Trim()))
                     throw new StatusException(HttpStatusCode.BadRequest, "Please provide a first name.");
                 if (string.IsNullOrEmpty(lastName?.Trim()))
                     throw new StatusException(HttpStatusCode.BadRequest, "Please provide a last name.");
 
                 //Generate a new instance
-                Instructor_db instance = new Instructor_db
+                Dietician_db instance = new Dietician_db
                     (
                         id: Convert.ToInt32(Guid.NewGuid()),
                         dob,
                         firstName, lastName,
-                        trainingType, trainingPhilosophy,
-                        exerciseModality, clientPopulation,
-                        accreditation
-                    );
+                        practice, doctorate,
+                        bachelorsDegree, associateDegree,
+                        certification
+                        );
 
-                //Add to database
                 int rowsAffected = context.ExecuteNonQueryCommand
                     (
-                        commandText: "INSERT INTO instructors (id, dob, first_name, last_name, training_type, training_philosophy, exercise_modality, client_population, accreditation) values (@id, @dob, @first_name, @last_name, @training_type, @training_philosophy, @exercise_modality, @client_population, @accreditation)",
+                        commandText: "INSERT INTO dieticians (id, dob, first_name, last_name, practice, doctorate, bachelors_degree, associate_degree, certification) values (@id, @dob, @first_name, @last_name, @practice, @doctorate, @bachelors_degree, @associate_degree, @certification)",
                         parameters: new Dictionary<string, object>()
                         {
                             { "@id", instance.Id },
                             { "@dob", instance.Dob },
                             { "@first_name", instance.FirstName },
                             { "@last_name", instance.LastName },
-                            { "@training_type", instance.TrainingType },
-                            { "@training_philosophy", instance.TrainingPhilosophy },
-                            { "@exercise_modality", instance.ExerciseModality },
-                            { "@client_population", instance.ClientPopulation },
-                            { "@accreditation", instance.Accreditation }
+                            { "@weight", instance.Practice },
+                            { "@height", instance.Doctorate },
+                            { "@waist_circumference", instance.BachelorsDegree },
+                            { "@hip_circumference", instance.AssociatesDegree },
+                            { "@neck_circumference", instance.Certification }
                         },
                         message: out string message
                     );
                 if (rowsAffected == -1)
                     throw new Exception(message);
 
-                //Return value
-                statusResponse = new StatusResponse("Instructor added successfully");
+                // Return value
+                statusResponse = new StatusResponse("Client added successfully");
                 return instance;
+
             }
             catch (Exception exception)
             {
@@ -70,9 +69,9 @@ namespace DatabaseLibrary.Helpers
         }
 
         /// <summary>
-        /// Retrieves a list of instances
+        /// Retrieves a list of instances.
         /// </summary>
-        public static List<Instructor_db> GetCollection (
+        public static List<Dietician_db> GetCollection(
             DbContext context, out StatusResponse statusResponse)
         {
             try
@@ -80,7 +79,7 @@ namespace DatabaseLibrary.Helpers
                 // Get from database
                 DataTable table = context.ExecuteDataQueryCommand
                     (
-                        commandText: "SELECT * FROM instructors",
+                        commandText: "SELECT * FROM dieticians",
                         parameters: new Dictionary<string, object>()
                         {
 
@@ -91,24 +90,24 @@ namespace DatabaseLibrary.Helpers
                     throw new Exception(message);
 
                 // Parse data
-                List<Instructor_db> instances = new List<Instructor_db>();
+                List<Dietician_db> instances = new List<Dietician_db>();
                 foreach (DataRow row in table.Rows)
-                    instances.Add(new Instructor_db
+                    instances.Add(new Dietician_db
                             (
                                 id: Convert.ToInt32(row["id"]),
                                 dob: Convert.ToDateTime(row["dob"]),
                                 firstName: row["first_name"].ToString(),
                                 lastName: row["last_name"].ToString(),
-                                trainingType: row["training_type"].ToString(),
-                                trainingPhilosophy: row["training_philosophy"].ToString(),
-                                exerciseModality: row["exercise_modality"].ToString(),
-                                clientPopulation: Convert.ToInt32(row["client_population"]),
-                                accreditation: row["accreditation"].ToString()
+                                practice: row["practice"].ToString(),
+                                doctorate: row["doctorate"].ToString(),
+                                bachelorsDegree: row["bachelors_degree"].ToString(),
+                                associatesDegree: row["associates_degree"].ToString(),
+                                certification: row["certification"].ToString()
                             )
                         );
 
                 // Return value
-                statusResponse = new StatusResponse("Instructors list has been retrieved successfully.");
+                statusResponse = new StatusResponse("Dieticians list has been retrieved successfully.");
                 return instances;
             }
             catch (Exception exception)
@@ -121,7 +120,7 @@ namespace DatabaseLibrary.Helpers
         /// <summary>
         /// Retrieves specific instance
         /// </summary>
-        public static Instructor_db GetInstructor(int id,
+        public static Dietician_db GetClient(int id,
             DbContext context, out StatusResponse statusResponse)
         {
             try
@@ -129,7 +128,7 @@ namespace DatabaseLibrary.Helpers
                 // Get from database
                 DataTable table = context.ExecuteDataQueryCommand
                     (
-                        commandText: "SELECT * FROM instructors WHERE id = @id",
+                        commandText: "SELECT * FROM dieticians WHERE id = @id",
                         parameters: new Dictionary<string, object>()
                         {
                             { "@id", id },
@@ -140,23 +139,22 @@ namespace DatabaseLibrary.Helpers
                     throw new Exception(message);
 
                 // Parse data
-                Instructor_db instances = new Instructor_db();
+                Dietician_db instances = new Dietician_db();
                 foreach (DataRow row in table.Rows)
-                    instances = new Instructor_db
-                        (
+                    instances = new Dietician_db(
                             id: Convert.ToInt32(row["id"]),
                             dob: Convert.ToDateTime(row["dob"]),
                             firstName: row["first_name"].ToString(),
                             lastName: row["last_name"].ToString(),
-                            trainingType: row["trainingType"].ToString(),
-                            trainingPhilosophy: row["trainingPhilosophy"].ToString(),
-                            exerciseModality: row["exerciseModality"].ToString(),
-                            clientPopulation: Convert.ToInt32(row["clientPopulation"]),
-                            accreditation : row["last_name"].ToString()
-                        );
+                            practice: row["practice"].ToString(),
+                            doctorate: row["doctorate"].ToString(),
+                            bachelorsDegree: row["bachelors_degree"].ToString(),
+                            associatesDegree: row["associates_degree"].ToString(),
+                            certification: row["certification"].ToString()
+                    );
 
                 // Return value
-                statusResponse = new StatusResponse("Instructor has been retrieved successfully.");
+                statusResponse = new StatusResponse("Dieticians list has been retrieved successfully.");
                 return instances;
             }
             catch (Exception exception)
@@ -169,14 +167,14 @@ namespace DatabaseLibrary.Helpers
         /// <summary>
         /// Deletes information of given client
         /// </summary>
-        public static Instructor_db DeleteInstructor(int id,
+        public static Dietician_db DeleteClient(int id,
             DbContext context, out StatusResponse statusResponse)
         {
 
             // Delete from database
             DataTable table = context.ExecuteDataQueryCommand
                 (
-                    commandText: "DELETE * FROM instructors WHERE id = @id",
+                    commandText: "DELETE * FROM clients WHERE id = @id",
                     parameters: new Dictionary<string, object>()
                     {
                             { "@id", id },
@@ -185,7 +183,7 @@ namespace DatabaseLibrary.Helpers
                 );
             try
             {
-                statusResponse = new StatusResponse("Instructor has been removed successfully.");
+                statusResponse = new StatusResponse("Dietician has been removed successfully.");
                 return null;
             }
             catch (Exception exception)

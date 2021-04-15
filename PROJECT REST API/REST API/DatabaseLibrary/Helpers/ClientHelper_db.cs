@@ -15,7 +15,7 @@ namespace DatabaseLibrary.Helpers
         /// <summary>
         /// Adds a new instance into the database.
         /// </summary>
-        public static Client_db Add(string firstName, string lastName, double weight, double height, double waistCircumference, double hipCircumference, double neckCircumference,
+        public static Client_db Add(DateTime dob, string firstName, string lastName, double weight, double height, double waistCircumference, double hipCircumference, double neckCircumference,
             DbContext context, out StatusResponse statusResponse)
         {
             try
@@ -30,6 +30,7 @@ namespace DatabaseLibrary.Helpers
                 Client_db instance = new Client_db
                     (
                         id: Convert.ToInt32(Guid.NewGuid()), //This can be ignored is PK in your DB is auto increment
+                        dob,
                         firstName, lastName,
                         weight, height,
                         waistCircumference, hipCircumference, neckCircumference
@@ -38,10 +39,11 @@ namespace DatabaseLibrary.Helpers
                 // Add to database
                 int rowsAffected = context.ExecuteNonQueryCommand
                     (
-                        commandText: "INSERT INTO clients (id, first_name, last_name, weight, height, waistCircumference, hipCircumference, neckCircumference) values (@id, @first_name, @last_name, @weight, @height, @waist_circumference, @hip_circumference, @neck_circumference)",
+                        commandText: "INSERT INTO clients (id, dob, first_name, last_name, weight, height, waistCircumference, hipCircumference, neckCircumference) values (@id, @dob, @first_name, @last_name, @weight, @height, @waist_circumference, @hip_circumference, @neck_circumference)",
                         parameters: new Dictionary<string, object>()
                         {
                             { "@id", instance.Id },
+                            { "@dob", instance.Dob },
                             { "@first_name", instance.FirstName },
                             { "@last_name", instance.LastName },
                             { "@weight", instance.Weight },
@@ -93,6 +95,7 @@ namespace DatabaseLibrary.Helpers
                     instances.Add(new Client_db
                             (
                                 id: Convert.ToInt32(row["id"]),
+                                dob: Convert.ToDateTime(row["dob"]),
                                 firstName: row["first_name"].ToString(), 
                                 lastName: row["last_name"].ToString(),
                                 weight: Convert.ToDouble(row["weight"]),
@@ -140,6 +143,7 @@ namespace DatabaseLibrary.Helpers
                 foreach (DataRow row in table.Rows)
                         instances = new Client_db (
                                 id: Convert.ToInt32(row["id"]),
+                                dob: Convert.ToDateTime(row["dob"]),
                                 firstName: row["first_name"].ToString(),
                                 lastName: row["last_name"].ToString(),
                                 weight: Convert.ToDouble(row["weight"]),
@@ -152,6 +156,35 @@ namespace DatabaseLibrary.Helpers
                 // Return value
                 statusResponse = new StatusResponse("Clients list has been retrieved successfully.");
                 return instances;
+            }
+            catch (Exception exception)
+            {
+                statusResponse = new StatusResponse(exception);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Deletes information of given client
+        /// </summary>
+        public static Client_db DeleteClient(int id,
+            DbContext context, out StatusResponse statusResponse)
+        {
+
+            // Delete from database
+            DataTable table = context.ExecuteDataQueryCommand
+                (
+                    commandText: "DELETE * FROM clients WHERE id = @id",
+                    parameters: new Dictionary<string, object>()
+                    {
+                            { "@id", id },
+                    },
+                    message: out string message
+                );
+            try
+            {
+                statusResponse = new StatusResponse("Client has been removed successfully.");
+                return null;
             }
             catch (Exception exception)
             {
