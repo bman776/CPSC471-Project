@@ -5,6 +5,7 @@
 	$pwd = "";
 	$db = "cpsc471_project_db";
 	
+	//Connect to DataBase
 	$conn = mysqli_connect($host, $user, $pwd, $db);
 	
 	//Check connection

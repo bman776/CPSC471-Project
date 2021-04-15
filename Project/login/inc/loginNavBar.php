@@ -7,13 +7,8 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">My Fit</a>
+          <a class="navbar-brand" href="#">My Fitness</a>
         </div>
-        <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li><a href="<?php echo ROOT_URL; ?>">Home</a></li>
-			<li><a href="<?php echo ROOT_URL; ?>addpost.php">Add Post</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
+        <div id="navbar" class="collapse navbar-collapse"></div><!--/.nav-collapse -->
      </div>
 </nav>
