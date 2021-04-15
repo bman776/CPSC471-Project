@@ -1,11 +1,11 @@
 <?php
-	require('../../config/config.php');
-	require('../../config/db.php');
+	require('../config/config.php');
+	require('../config/db.php');
 
     $dir_name = dirname($_SERVER['PHP_SELF']); 
 ?>
 
-<?php include('../inc/clientHeader.php'); ?>
+<?php include('inc/clientHeader.php'); ?>
 	<div class="container">
 		<h1>My Logs</h1>
         <legend>Please select the type of log you wish to view.</legend>
@@ -24,4 +24,4 @@
         </li>
         </ul>
 	</div>
-<?php include('../../inc/footer.php'); ?>
+<?php include('../inc/footer.php'); ?>

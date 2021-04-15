@@ -1,6 +1,6 @@
 <?php
-	require('../../config/config.php');
-	require('../../config/db.php');
+	require('../config/config.php');
+	require('../config/db.php');
 ?>
 
 <?php include('inc/clientHeader.php'); ?>
