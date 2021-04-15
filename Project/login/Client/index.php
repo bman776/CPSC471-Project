@@ -6,6 +6,7 @@
 	session_start();
 
 	$name = $_SESSION['name'];
+	$id = $_SESSION['id']
 ?>
 
 <?php include('inc/clientHeader.php'); ?>
