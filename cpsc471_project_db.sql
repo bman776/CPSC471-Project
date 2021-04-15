@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3308
--- Generation Time: Apr 15, 2021 at 02:00 AM
+-- Generation Time: Apr 15, 2021 at 07:09 PM
 -- Server version: 8.0.18
 -- PHP Version: 7.3.12
 
@@ -31,6 +31,7 @@ SET time_zone = "+00:00";
 DROP TABLE IF EXISTS `cardio_log`;
 CREATE TABLE IF NOT EXISTS `cardio_log` (
   `clientID` int(9) NOT NULL,
+  `log_name` varchar(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `log_date` date NOT NULL,
   `cardio_type` varchar(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `start_time` time NOT NULL,
@@ -43,9 +44,9 @@ CREATE TABLE IF NOT EXISTS `cardio_log` (
 -- Dumping data for table `cardio_log`
 --
 
-INSERT INTO `cardio_log` (`clientID`, `log_date`, `cardio_type`, `start_time`, `end_time`, `calories_burned`) VALUES
-(0, '0000-00-00', '', '00:00:00', '00:00:00', 0),
-(1, '2021-04-05', 'TreadMill', '10:10:14', '10:45:05', 500);
+INSERT INTO `cardio_log` (`clientID`, `log_name`, `log_date`, `cardio_type`, `start_time`, `end_time`, `calories_burned`) VALUES
+(0, 'Cardio Day 1', '0000-00-00', 'Stair Master', '25:14:00', '25:52:00', 0),
+(1, 'Cardio Training 1', '2021-04-05', 'TreadMill', '10:10:14', '10:45:05', 500);
 
 -- --------------------------------------------------------
 
@@ -458,6 +459,7 @@ CREATE TABLE IF NOT EXISTS `view` (
 DROP TABLE IF EXISTS `workout_log`;
 CREATE TABLE IF NOT EXISTS `workout_log` (
   `clientID` int(9) NOT NULL,
+  `log_name` varchar(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `log_date` date NOT NULL,
   `start_time` time NOT NULL,
   `end_time` time NOT NULL,
@@ -471,8 +473,8 @@ CREATE TABLE IF NOT EXISTS `workout_log` (
 -- Dumping data for table `workout_log`
 --
 
-INSERT INTO `workout_log` (`clientID`, `log_date`, `start_time`, `end_time`, `calories_burned`) VALUES
-(0, '2021-04-14', '17:25:12', '18:15:08', 1300);
+INSERT INTO `workout_log` (`clientID`, `log_name`, `log_date`, `start_time`, `end_time`, `calories_burned`) VALUES
+(0, 'strenghtDay1', '2021-04-14', '17:25:12', '18:15:08', 1300);
 
 -- --------------------------------------------------------
 
