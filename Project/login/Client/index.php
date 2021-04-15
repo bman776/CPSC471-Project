@@ -8,4 +8,4 @@
 		<h1>Client</h1>
 
 	</div>
-<?php include('inc/footer.php'); ?>
+<?php include('../inc/footer.php'); ?>
