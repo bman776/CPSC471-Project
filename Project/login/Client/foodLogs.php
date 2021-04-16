@@ -34,8 +34,7 @@
 
 <?php include('inc/clientHeader.php'); ?>
 	<div class="container">
-		<h1>My Workout Logs</h1>
-        <legend>Please select the Workout log you wish to view.</legend>
+		<h1>My Food Logs</h1>
         <?php foreach($food_log as $log) : ?>
             <div>
                 <h3><?php echo $log['meal_desc']; ?></h3>
