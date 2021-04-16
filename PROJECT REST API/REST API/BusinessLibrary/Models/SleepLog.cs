@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BusinessLibrary.Models
 {
-    class SleepLog
+    public class SleepLog
     {
         #region Contructors
 

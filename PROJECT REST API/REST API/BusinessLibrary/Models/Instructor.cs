@@ -20,12 +20,11 @@ namespace BusinessLibrary.Models
         /// <summary>
         /// Fields constructor.
         /// </summary>
-        public Instructor(int id, DateTime dob, string firstName, string lastName, string trainingType, string trainingPhilosophy, string exerciseModality, int clientPopulation, string accreditation)
+        public Instructor(int id, DateTime dob, string name, string trainingType, string trainingPhilosophy, string exerciseModality, int clientPopulation, string accreditation)
         {
             Id = id;
             Dob = dob;
-            FirstName = firstName;
-            LastName = lastName;
+            Name = name;
             TrainingType = trainingType;
             TrainingPhilosophy = trainingPhilosophy;
             ExerciseModality = exerciseModality;
@@ -61,14 +60,8 @@ namespace BusinessLibrary.Models
         /// <summary>
         /// First name of the client.
         /// </summary>
-        [JsonProperty(PropertyName = "firstName")]
-        public string FirstName { get; set; }
-
-        /// <summary>
-        /// Last name of the client.
-        /// </summary>
-        [JsonProperty(PropertyName = "lastName")]
-        public string LastName { get; set; }
+        [JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
 
         /// <summary>
         /// Instructor's training type
@@ -109,18 +102,6 @@ namespace BusinessLibrary.Models
             get
             {
                 return new string[] {TrainingType, TrainingPhilosophy};
-            }
-        }
-
-        /// <summary>
-        /// FUll name of the client.
-        /// </summary>
-        [JsonProperty(PropertyName = "fullName")]
-        public string FullName
-        {
-            get
-            {
-                return string.Format("{0} {1}", FirstName, LastName);
             }
         }
 

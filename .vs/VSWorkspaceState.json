@@ -6,11 +6,11 @@
     "\\PROJECT REST API\\REST API\\BusinessLibrary",
     "\\PROJECT REST API\\REST API\\BusinessLibrary\\Models",
     "\\PROJECT REST API\\REST API\\DatabaseLibrary",
-    "\\PROJECT REST API\\REST API\\DatabaseLibrary\\Core",
     "\\PROJECT REST API\\REST API\\DatabaseLibrary\\Models",
     "\\PROJECT REST API\\REST API\\Webservice",
-    "\\PROJECT REST API\\REST API\\Webservice\\ControllerHelpers"
+    "\\PROJECT REST API\\REST API\\Webservice\\ControllerHelpers",
+    "\\PROJECT REST API\\REST API\\Webservice\\Controllers"
   ],
-  "SelectedNode": "\\PROJECT REST API\\REST API\\Webservice\\Startup.cs",
+  "SelectedNode": "\\PROJECT REST API\\REST API\\BusinessLibrary\\Models\\Instructor.cs",
   "PreviewInSolutionExplorer": false
 }
