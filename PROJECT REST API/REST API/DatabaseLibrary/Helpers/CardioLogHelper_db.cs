@@ -14,17 +14,19 @@ namespace DatabaseLibrary.Helpers
         /// <summary>
         /// Adds a new instance into the database.
         /// </summary>
-        public static CardioLog_db Add(int id, DateTime date, TimeSpan duration, int caloriesBurned, string exerciseType,
+        public static CardioLog_db Add(int id, string logName, DateTime logDate, TimeSpan startTime, TimeSpan endTime, int caloriesBurned, string exerciseType,
             DbContext context, out StatusResponse statusResponse)
         {
             try
             {
                 if (id == 0)
                     throw new StatusException(HttpStatusCode.BadRequest, "Please provide a valid id");
-                if (date == DateTime.MinValue)
+                if (logDate == DateTime.MinValue)
                     throw new StatusException(HttpStatusCode.BadRequest, "Please provide a valid date");
-                if (duration == TimeSpan.Zero)
-                    throw new StatusException(HttpStatusCode.BadRequest, "Please provide a valid duration");
+                if (startTime == TimeSpan.Zero)
+                    throw new StatusException(HttpStatusCode.BadRequest, "Please provide a valid time");
+                if (endTime == TimeSpan.Zero)
+                    throw new StatusException(HttpStatusCode.BadRequest, "Please provide a valid time");
 
                 //Generate a new instance
                 CardioLog_db instance = new CardioLog_db
@@ -35,14 +37,16 @@ namespace DatabaseLibrary.Helpers
                 //Add to database
                 int rowsAffected = context.ExecuteNonQueryCommand
                     (
-                        commandText: "INSERT INTO cardioLogs (id, date, duration, calories_burned, exercise_type) values (@id, @date, @duration, @calories_burned, @exercise_type)",
+                        commandText: "INSERT INTO cardio_log (clientId, log_name, log_date, cardio_type, start_time, end_time, calories_burned) values (@id, @name, @date, @type, @start, @end, @calories)",
                         parameters: new Dictionary<string, object>()
                         {
                             { "@id", instance.Id },
+                            { "@name", instance.Name },
                             { "@date", instance.LogDate },
-                            { "@time", instance.Time },
-                            { "@calories_burned", instance.CaloriesBurned },
-                            { "@exercise_type", instance.CardioType },
+                            { "@start", instance.StartTime },
+                            { "@end", instance.EndTime },
+                            { "@calories", instance.CaloriesBurned },
+                            { "@type", instance.CardioType }
                         },
                         message: out string message
                     );
@@ -63,7 +67,7 @@ namespace DatabaseLibrary.Helpers
         /// <summary>
         /// Retrieves a list of instances
         /// </summary>
-        public static List<CardioLog_db> GetCollection(
+        public static List<CardioLog_db> GetCollection( int id
             DbContext context, out StatusResponse statusResponse)
         {
             try
@@ -71,10 +75,10 @@ namespace DatabaseLibrary.Helpers
                 // Get from database
                 DataTable table = context.ExecuteDataQueryCommand
                     (
-                        commandText: "SELECT * FROM cardioLogs",
+                        commandText: "SELECT * FROM cardio_log WHERE clientId = @id",
                         parameters: new Dictionary<string, object>()
                         {
-
+                            { "@id", id }
                         },
                         message: out string message
                     );
@@ -87,15 +91,17 @@ namespace DatabaseLibrary.Helpers
                     instances.Add(new CardioLog_db
                         (
                             id: Convert.ToInt32(row["id"]),
+                            name: row["name"].ToString(),
                             logDate: Convert.ToDateTime(row["date"]),
-                            time: TimeSpan.Parse(row["time"].ToString()),
+                            startTime: TimeSpan.Parse(row["start_time"].ToString()),
+                            endTime: TimeSpan.Parse(row["end_time"].ToString()),
                             caloriesBurned: Convert.ToInt32(row["calories_burned"]),
-                            cardioType: row["exercise_type"].ToString()
+                            cardioType: row["cardio_type"].ToString()
                         )
                     );
 
                 //return value
-                statusResponse = new StatusResponse("Sleep logs list has been retrieved successfully");
+                statusResponse = new StatusResponse("Cardio logs list has been retrieved successfully");
                 return instances;
             }
             catch (Exception exception)
@@ -135,14 +141,16 @@ namespace DatabaseLibrary.Helpers
                     instance = new CardioLog_db
                         (
                             id: Convert.ToInt32(row["id"]),
+                            name: row["name"].ToString(),
                             logDate: Convert.ToDateTime(row["date"]),
-                            time: TimeSpan.Parse(row["time"].ToString()),
+                            startTime: TimeSpan.Parse(row["start_time"].ToString()),
+                            endTime: TimeSpan.Parse(row["end_time"].ToString()),
                             caloriesBurned: Convert.ToInt32(row["calories_burned"]),
-                            cardioType: row["exercise_type"].ToString()
+                            cardioType: row["cardio_type"].ToString()
                         );
 
                 //Return value
-                statusResponse = new StatusResponse("Sleep Log successfully retrieved");
+                statusResponse = new StatusResponse("Cardio Log successfully retrieved");
                 return instance;
             }
             catch (Exception exception)
@@ -163,7 +171,7 @@ namespace DatabaseLibrary.Helpers
                 // Delete from database
                 DataTable table = context.ExecuteDataQueryCommand
                     (
-                        commandText: "DELETE * FROM cardioLogs WHERE id = @id, date = @date, time = @time",
+                        commandText: "DELETE * FROM cardioLogs WHERE clientId = @id, log_date = @date, start_time = @time",
                         parameters: new Dictionary<string, object>()
                         {
                             { "@id", id },
@@ -182,7 +190,7 @@ namespace DatabaseLibrary.Helpers
             }
         }
 
-        public static CardioLog_db EditCardioLog(int id, DateTime date, TimeSpan duration, int caloriesBurned, string exerciseType,
+        public static CardioLog_db EditCardioLog(int id, string name, DateTime date, TimeSpan startTime, TimeSpan endTime, int caloriesBurned, string exerciseType,
             DbContext context, out StatusResponse statusResponse)
         {
             try
@@ -190,18 +198,20 @@ namespace DatabaseLibrary.Helpers
                 // Edit from database
                 DataTable table = context.ExecuteDataQueryCommand
                     (
-                        commandText: "UPDATE cardioLogs SET date = @date, time = @time, calories_burned = @calories_burned, exercise_type = @exercise_type WHERE  id = @id, date = @date, time = @time",
+                        commandText: "UPDATE cardioLogs SET log_name = @name, end_time = @end_time, calories_burned = @calories_burned, exercise_type = @exercise_type WHERE  clientId = @id, log_date = @date, start_time = @start_time",
                         parameters: new Dictionary<string, object>()
                         {
                             { "@id", id },
+                            { "@name", name },
                             { "@date", date },
-                            { "@time", duration },
+                            { "@start_time", startTime },
+                            { "@end_time", endTime },
                             { "@calories_burned", caloriesBurned },
-                            { "@exercise_type", exerciseType },
+                            { "@cardio_type", exerciseType },
                         },
                         message: out string message
                     );
-                statusResponse = new StatusResponse("Cardio Log has been removed successfully.");
+                statusResponse = new StatusResponse("Cardio Log has been edited successfully.");
                 return null;
             }
             catch (Exception exception)

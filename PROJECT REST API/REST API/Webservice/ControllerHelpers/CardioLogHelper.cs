@@ -1,4 +1,4 @@
-﻿using BusinessLibrary.Models;
+using BusinessLibrary.Models;
 using DatabaseLibrary.Core;
 using DatabaseLibrary.Models;
 using Newtonsoft.Json.Linq;
@@ -10,19 +10,18 @@ using System.Threading.Tasks;
 
 namespace Webservice.ControllerHelpers
 {
-    public class ClientHelper
+    public class CardioLogHelper
     {
-
         #region Converters
 
         /// <summary>
         /// Converts database models to a business logic object.
         /// </summary>
-        public static BusinessLibrary.Models.Client Convert(Client_db instance)
+        public static BusinessLibrary.Models.CardioLog Convert(CardioLog_db instance)
         {
             if (instance == null)
                 return null;
-            return new BusinessLibrary.Models.Client(instance.Id, instance.Dob, instance.FirstName, instance.LastName, instance.Weight, instance.Height, instance.WaistCircumference, instance.HipCircumference, instance.NeckCircumference);
+            return new BusinessLibrary.Models.CardioLog(instance.Id, instance.LogDate, instance.Time, instance.CaloriesBurned, instance.CardioType);
         }
 
         #endregion
@@ -35,23 +34,20 @@ namespace Webservice.ControllerHelpers
             DbContext context, out HttpStatusCode statusCode, bool includeDetailedErrors = false)
         {
             // Extract paramters
-            DateTime dob = (data.ContainsKey("dob")) ? data.GetValue("dob").Value<DateTime>() : DateTime.MinValue;
-            string firstName = (data.ContainsKey("firstName")) ? data.GetValue("firstName").Value<string>() : null;
-            string lastName = (data.ContainsKey("lastName")) ? data.GetValue("lastName").Value<string>() : null;
-            double weight = (data.ContainsKey("weight")) ? data.GetValue("weight").Value<double>() : 0.0;
-            double height = (data.ContainsKey("height")) ? data.GetValue("height").Value<double>() : 0.0;
-            double waistCircumference = (data.ContainsKey("waistCircumference")) ? data.GetValue("waistCircumference").Value<double>() : 0.0;
-            double hipCircumference = (data.ContainsKey("hipCircumference")) ? data.GetValue("hipCircumference").Value<double>() : 0.0;
-            double neckCircumference = (data.ContainsKey("neckCircumference")) ? data.GetValue("neckCircumference").Value<double>() : 0.0;
+            int id = (data.ContainsKey("id")) ? data.GetValue("id").Value<int>() : 0.0;
+            DateTime logDate = (data.ContainsKey("logDate")) ? data.GetValue("logDate").Value<DateTime>() : DateTime.MinValue;
+            TimeSpan time = (data.ContainsKey("time")) ? data.GetValue("time").Value<TimeSpan>() : null;
+            int caloriesBurned = (data.ContainsKey("caloriesBurned")) ? data.GetValue("caloriesBurned").Value<int>() : 0.0;
+            string cardioType = (data.ContainsKey("cardioType")) ? data.GetValue("cardioType").Value<string>() : null;
 
             // Add instance to database
-            var dbInstance = DatabaseLibrary.Helpers.ClientHelper_db.Add(dob, firstName, lastName, weight, height, waistCircumference, hipCircumference, neckCircumference,
+            var dbInstance = DatabaseLibrary.Helpers.CardioLogHelper_db.Add(id, logDate, time, caloriesBurned, cardioType,
                 context, out StatusResponse statusResponse);
 
             // Get rid of detailed internal server error message (when requested)
             if (statusResponse.StatusCode == HttpStatusCode.InternalServerError
                 && !includeDetailedErrors)
-                statusResponse.Message = "Something went wrong while adding a new client.";
+                statusResponse.Message = "Something went wrong while adding a new cardio log.";
 
             // Return response
             var response = new ResponseMessage
@@ -72,7 +68,7 @@ namespace Webservice.ControllerHelpers
             DbContext context, out HttpStatusCode statusCode, bool includeDetailedErrors = false)
         {
             // Get instances from database
-            var dbInstances = DatabaseLibrary.Helpers.ClientHelper_db.GetCollection(
+            var dbInstances = DatabaseLibrary.Helpers.CardioLog_db.GetCollection(
                 context, out StatusResponse statusResponse);
 
             // Convert to business logic objects
@@ -81,7 +77,7 @@ namespace Webservice.ControllerHelpers
             // Get rid of detailed error message (when requested)
             if (statusResponse.StatusCode == HttpStatusCode.InternalServerError
                 && !includeDetailedErrors)
-                statusResponse.Message = "Something went wrong while retrieving the client";
+                statusResponse.Message = "Something went wrong while retrieving the cardio log";
 
             // Return response
             var response = new ResponseMessage
@@ -94,18 +90,18 @@ namespace Webservice.ControllerHelpers
             return response;
         }
 
-        public static ResponseMessage GetClient(int id,
+        public static ResponseMessage GetCardioLog(int id, DateTime date, TimeSpan time,
             DbContext context, out HttpStatusCode statusCode, bool includeDetailedErrors = false)
         {
 
-            var dbInstance = DatabaseLibrary.Helpers.ClientHelper_db.GetClient(int id,
+            var dbInstance = DatabaseLibrary.Helpers.ClientHelper_db.GetCardioLog(int id, DateTime date, TimeSpan time,
                 context, out StatusResponse statusResponse);
 
             var instances = dbInstances?.Select(x => Convert(x)).ToList();
 
             se.StatusCode == HttpStatusCode.InternalServerError
                 && !includeDetailedErrors)
-                statusResponse.Message = "Something went wrong while retrieving the client";
+                statusResponse.Message = "Something went wrong while retrieving the cardio log";
 
             // Return response
             var response = new ResponseMessage
@@ -118,17 +114,17 @@ namespace Webservice.ControllerHelpers
             return response;
         }
 
-        public static ResponseMessage RemoveClient(int id,
+        public static ResponseMessage RemoveCardioLog(int id, DateTime date, TimeSpan time,
             DbContext context, out HttpStatusCode statusCode, bool includeDetailedErrors = false)
         {
-            var dbInstance = DatabaseLibrary.Helpers.ClientHelper_db.DeleteClient(int id,
+            var dbInstance = DatabaseLibrary.Helpers.ClientHelper_db.DeleteCardioLog(int id, DateTime date, TimeSpan time,
                 context, out StatusResponse statusResponse);
 
             var instances = dbInstances?.Select(x => Convert(x)).ToList();
 
             se.StatusCode == HttpStatusCode.InternalServerError
                 && !includeDetailedErrors)
-                statusResponse.Message = "Something went wrong while removing the client";
+                statusResponse.Message = "Something went wrong while removing the cardio log";
 
             var response = new ResponseMessage
                 (
@@ -140,17 +136,17 @@ namespace Webservice.ControllerHelpers
             return response;
         }
 
-        public static ResponseMessage EditClient(int id, double weight, double height, double waist, double hip, double neck,
+        public static ResponseMessage EditCardioLog(int id, string name, DateTime date, TimeSpan startTime, TimeSpan endTime, int caloriesBurned, string exerciseType,
             DbContext context, out HttpStatusCode statusCode, bool includeDetailedErrors = false)
         {
-            var dbInstance = DatabaseLibrary.Helpers.ClientHelper_db.EditClient(int id, double weight, double height, double waist, double hip, double neck,
+            var dbInstance = DatabaseLibrary.Helpers.ClientHelper_db.EditCardioLog(int id, string name, DateTime date, TimeSpan startTime, TimeSpan endTime, int caloriesBurned, string exerciseType,
                 context, out StatusResponse statusResponse);
 
             var instances = dbInstances?.Select(x => Convert(x)).ToList();
 
             se.StatusCode == HttpStatusCode.InternalServerError
                 && !includeDetailedErrors)
-                statusResponse.Message = "Something went wrong while editting the client";
+                statusResponse.Message = "Something went wrong while editting the cardio log";
 
             var response = new ResponseMessage
                 (
@@ -161,6 +157,5 @@ namespace Webservice.ControllerHelpers
             statusCode = statusResponse.StatusCode;
             return response;
         }
-
     }
 }

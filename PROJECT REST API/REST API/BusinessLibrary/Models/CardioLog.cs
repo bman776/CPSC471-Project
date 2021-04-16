@@ -15,11 +15,13 @@ namespace BusinessLibrary.Models
 
         }
 
-		public CardioLog(int id, DateTime logDate, TimeSpan time, int caloriesBurned, string cardioType)
+		public CardioLog(int id, string logName, DateTime logDate, TimeSpan startTime, TimeSpan endTime, int caloriesBurned, string cardioType)
         {
 			Id = id;
+			LogName = logName;
 			LogDate = logDate;
-			Time = time;
+			StartTime = startTime;
+			EndTime = endTime;
 			CaloriesBurned = caloriesBurned;
 			CardioType = cardioType;
         }
@@ -36,11 +38,17 @@ namespace BusinessLibrary.Models
 		[JsonProperty(PropertyName = "id")]
 		public int Id { get; set; }
 
+		[JsonProperty(PropertyName = "logName")]
+		public string LogName;
+
 		[JsonProperty(PropertyName = "logDate")]
 		public DateTime LogDate { get; set; }
 
-		[JsonProperty(PropertyName = "time")]
-		public TimeSpan Time { get; set; }
+		[JsonProperty(PropertyName = "startTime")]
+		public TimeSpan StartTime { get; set; }
+
+		[JsonProperty(PropertyName = "endTime")]
+		public TimeSpan EndTime { get; set; }
 
 		[JsonProperty(PropertyName = "caloriesBurned")]
 		public int CaloriesBurned { get; set; }

@@ -39,13 +39,12 @@ namespace DatabaseLibrary.Helpers
                 // Add to database
                 int rowsAffected = context.ExecuteNonQueryCommand
                     (
-                        commandText: "INSERT INTO clients (id, dob, first_name, last_name, weight, height, waistCircumference, hipCircumference, neckCircumference) values (@id, @dob, @first_name, @last_name, @weight, @height, @waist_circumference, @hip_circumference, @neck_circumference)",
+                        commandText: "BEGIN; INSERT INTO client (clientId, weight, height, waist_circ, hip_circ, neck_circ) values (@id, @weight, @height, @waist_circumference, @hip_circumference, @neck_circumference); INSERT INTO user (userID, name, DoB) values (@id, @name, @dob); COMMIT;",
                         parameters: new Dictionary<string, object>()
                         {
                             { "@id", instance.Id },
                             { "@dob", instance.Dob },
-                            { "@first_name", instance.FirstName },
-                            { "@last_name", instance.LastName },
+                            { "@name", instance.Name },
                             { "@weight", instance.Weight },
                             { "@height", instance.Height },
                             { "@waist_circumference", instance.WaistCircumference },
@@ -79,7 +78,7 @@ namespace DatabaseLibrary.Helpers
                 // Get from database
                 DataTable table = context.ExecuteDataQueryCommand
                     (
-                        commandText: "SELECT * FROM clients",
+                        commandText: "SELECT * FROM client NATURAL JOIN user",
                         parameters: new Dictionary<string, object>()
                         {
 
@@ -128,7 +127,7 @@ namespace DatabaseLibrary.Helpers
                 // Get from database
                 DataTable table = context.ExecuteDataQueryCommand
                     (
-                        commandText: "SELECT * FROM clients WHERE id = @id",
+                        commandText: "SELECT * FROM client NATURAL JOIN user WHERE id = @id",
                         parameters: new Dictionary<string, object>()
                         {
                             { "@id", id },
@@ -174,7 +173,7 @@ namespace DatabaseLibrary.Helpers
             // Delete from database
             DataTable table = context.ExecuteDataQueryCommand
                 (
-                    commandText: "DELETE * FROM clients WHERE id = @id",
+                    commandText: "BEGIN; DELETE * FROM client WHERE id = @id; DELETE * FROM user WHERE id = @id; COMMIT;",
                     parameters: new Dictionary<string, object>()
                     {
                             { "@id", id },
@@ -184,6 +183,36 @@ namespace DatabaseLibrary.Helpers
             try
             {
                 statusResponse = new StatusResponse("Client has been removed successfully.");
+                return null;
+            }
+            catch (Exception exception)
+            {
+                statusResponse = new StatusResponse(exception);
+                return null;
+            }
+        }
+
+        public static CardioLog_db EditClient(int id, double weight, double height, double waist, double hip, double neck,
+            DbContext context, out StatusResponse statusResponse)
+        {
+            try
+            {
+                // Edit from database
+                DataTable table = context.ExecuteDataQueryCommand
+                    (
+                        commandText: "UPDATE client SET weight = @weight, height = @height, waist_circ = @waist, hip_circ = @hip, neck_circ = @neck WHERE  clientId = @id",
+                        parameters: new Dictionary<string, object>()
+                        {
+                            { "@id", id },
+                            { "@weight", weight },
+                            { "@height", height },
+                            { "@waist", waist },
+                            { "@hip", hip },
+                            { "@neck", neck }
+                        },
+                        message: out string message
+                    );
+                statusResponse = new StatusResponse("Client has been edited successfully.");
                 return null;
             }
             catch (Exception exception)

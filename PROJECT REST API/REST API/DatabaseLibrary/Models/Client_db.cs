@@ -19,12 +19,11 @@ namespace DatabaseLibrary.Models
         /// <summary>
         /// Fields constructor.
         /// </summary>
-        public Client_db(int id, DateTime dob, string firstName, string lastName, double weight, double height, double waistCircumference, double hipCircumference, double neckCircumference)
+        public Client_db(int id, DateTime dob, string name, double weight, double height, double waistCircumference, double hipCircumference, double neckCircumference)
         {
             Id = id;
             Dob = dob;
-            FirstName = firstName;
-            LastName = lastName;
+            Name = name;
             Weight = weight;
             Height = height;
             WaistCircumference = waistCircumference;
@@ -49,12 +48,7 @@ namespace DatabaseLibrary.Models
         /// <summary>
         /// First name used of the client.
         /// </summary>
-        public string FirstName { get; set; }
-
-        /// <summary>
-        /// Last name used of the client.
-        /// </summary>
-        public string LastName { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Weight of the client.

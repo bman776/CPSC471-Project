@@ -22,11 +22,10 @@ namespace BusinessLibrary.Models
         /// <summary>
         /// Fields constructor.
         /// </summary>
-        public Client(int id, DateTime dob, string firstName, string lastName, double weight, double height, double waistCircumference, double hipCircumference, double neckCircumference)
+        public Client(int id, DateTime dob, string name, double weight, double height, double waistCircumference, double hipCircumference, double neckCircumference)
         {
             Id = id;
-            FirstName = firstName;
-            LastName = lastName;
+            Name = name;
             Weight = weight;
             Height = height;
             WaistCircumference = waistCircumference;
@@ -39,7 +38,7 @@ namespace BusinessLibrary.Models
         /// </summary>
         /// <param name="instance">The object to clone from.</param>
         public Client(Client instance)
-            : this(instance.Id, instance.Dob, instance.FirstName, instance.LastName, instance.Weight, instance.Height, instance.WaistCircumference, instance.HipCircumference, instance.NeckCircumference)
+            : this(instance.Id, instance.Dob, instance.Name, instance.Weight, instance.Height, instance.WaistCircumference, instance.HipCircumference, instance.NeckCircumference)
         {
         }
 
@@ -62,14 +61,8 @@ namespace BusinessLibrary.Models
         /// <summary>
         /// First name of the client.
         /// </summary>
-        [JsonProperty(PropertyName = "firstName")]
-        public string FirstName { get; set; }
-
-        /// <summary>
-        /// Last name of the client.
-        /// </summary>
-        [JsonProperty(PropertyName = "lastName")]
-        public string LastName { get; set; }
+        [JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
 
         /// <summary>
         /// Weight of the client.
@@ -101,18 +94,6 @@ namespace BusinessLibrary.Models
         [JsonProperty(PropertyName = "neckCircumference")]
         public double NeckCircumference { get; set; }
 
-        /// <summary>
-        /// FUll name of the client.
-        /// </summary>
-        [JsonProperty(PropertyName = "fullName")]
-        public string FullName
-        {
-            get
-            {
-                return string.Format("{0} {1}", FirstName, LastName);
-            }
-        }
-
         #endregion
 
         #region Methods
@@ -122,7 +103,7 @@ namespace BusinessLibrary.Models
         /// </summary>
         public override string ToString()
         {
-            return FullName;
+            return Name;
         }
 
         #endregion

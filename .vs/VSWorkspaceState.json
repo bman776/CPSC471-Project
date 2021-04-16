@@ -1,7 +1,16 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\PROJECT REST API",
+    "\\PROJECT REST API\\REST API",
+    "\\PROJECT REST API\\REST API\\BusinessLibrary",
+    "\\PROJECT REST API\\REST API\\BusinessLibrary\\Models",
+    "\\PROJECT REST API\\REST API\\DatabaseLibrary",
+    "\\PROJECT REST API\\REST API\\DatabaseLibrary\\Core",
+    "\\PROJECT REST API\\REST API\\DatabaseLibrary\\Models",
+    "\\PROJECT REST API\\REST API\\Webservice",
+    "\\PROJECT REST API\\REST API\\Webservice\\ControllerHelpers"
   ],
-  "SelectedNode": "\\PROJECT REST API.sln",
+  "SelectedNode": "\\PROJECT REST API\\REST API\\Webservice\\Startup.cs",
   "PreviewInSolutionExplorer": false
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -52,10 +52,10 @@ namespace Webservice.Controllers
 
         // Gets collection.
         [HttpGet]
-        [Route("GetClients")]
+        [Route("GetCardioLogs")]
         public ResponseMessage GetClients()
         {
-            var response = ClientHelper.GetCollection(
+            var response = CardioLogHelper.GetCollection(
                 context: Database.DbContext,
                 statusCode: out HttpStatusCode statusCode,
                 includeDetailedErrors: HostingEnvironment.IsDevelopment());
@@ -65,11 +65,11 @@ namespace Webservice.Controllers
 
         // Adds a new instance.
         [HttpPost]
-        [Route("AddClient")]
-        public ResponseMessage AddClient([FromBody] JObject data)
+        [Route("AddCardioLog")]
+        public ResponseMessage AddCardioLog([FromBody] JObject data)
         {
 
-            var response = ClientHelper.Add(data,
+            var response = CardioLogHelper.Add(data,
                 context: Database.DbContext,
                 statusCode: out HttpStatusCode statusCode,
                 includeDetailedErrors: HostingEnvironment.IsDevelopment());
@@ -79,11 +79,11 @@ namespace Webservice.Controllers
 
 
         [HttpGet]
-        [Route("GetClient")]
-        public ResponseMessage GetClient([FromBody] JObject data)
+        [Route("GetCardioLog")]
+        public ResponseMessage GetCardioLog(int id, DateTime date, TimeSpan time)
         {
             var response = ClientHelper.GetClient(
-                id,
+                int id, DateTime date, TimeSpan time,
                 context: Database.DbContext,
                 statusCode: out HttpStatusCode statusCode,
                 includeDetailedErrors: HostingEnvironment.IsDevelopment());
@@ -92,16 +92,11 @@ namespace Webservice.Controllers
         }
 
         [HttpPut]
-        [Route("EditClient")]
-        public ResponseMessage EditClient([FromBody] JObject data)
+        [Route("EditCardioLog")]
+        public ResponseMessage EditCardioLog([FromBody] JObject data)
         {
             var response = ClientHelper.EditClient(
-                id,
-                weight,
-                height,
-                waist,
-                hip,
-                neck,
+                int id, string name, DateTime date, TimeSpan startTime, TimeSpan endTime, int caloriesBurned, string exerciseType,
                 context: Database.DbContext,
                 statusCode: out HttpStatusCode statusCode,
                 includeDetailedErrors: HostingEnvironment.IsDevelopment());
@@ -110,11 +105,11 @@ namespace Webservice.Controllers
         }
 
         [HttpDelete]
-        [Route("DeleteClient")]
-        public ResponseMessage DeleteClient([FromBody] JObject data)
+        [Route("DeleteCardioLog")]
+        public ResponseMessage DeleteCardioLog([FromBody] JObject data)
         {
             var response = ClientHelper.RemoveClient(
-                id,
+                int id, DateTime date, TimeSpan time,
                 context: Database.DbContext,
                 statusCode: out HttpStatusCode statusCode,
                 includeDetailedErrors: HostingEnvironment.IsDevelopment());

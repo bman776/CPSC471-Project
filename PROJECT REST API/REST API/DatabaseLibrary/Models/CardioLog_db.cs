@@ -12,11 +12,13 @@ namespace DatabaseLibrary.Models
 
         }
 
-        public CardioLog_db(int id, DateTime logDate, TimeSpan time, int caloriesBurned, string cardioType)
+        public CardioLog_db(int id, string logName, DateTime logDate, TimeSpan startTime, TimeSpan endTime, int caloriesBurned, string cardioType)
         {
             Id = id;
+            LogName = logName;
             LogDate = logDate;
-            Time = time;
+            StartTime = startTime;
+            EndTime = endTime;
             CaloriesBurned = caloriesBurned;
             CardioType = cardioType;
         }
@@ -27,11 +29,16 @@ namespace DatabaseLibrary.Models
 
         public int Id { get; set; }
 
+        public string LogName;
+
         public DateTime LogDate { get; set; }
 
-        public TimeSpan Time { get; set; }
+        public TimeSpan StartTime { get; set; }
+
+        public TimeSpan EndTime { get; set; }
 
         public int CaloriesBurned { get; set; }
+
         public string CardioType { get; set; }
 
         #endregion
