@@ -19,12 +19,11 @@ namespace DatabaseLibrary.Models
         /// <summary>
         /// Fields constructor.
         /// </summary>
-        public Dietician_db(int id, DateTime dob, string firstName, string lastName, string practice, string doctorate, string bachelorsDegree, string associatesDegree, string certification)
+        public Dietician_db(int id, DateTime dob, string name, string practice, string doctorate, string bachelorsDegree, string associatesDegree, string certification)
         {
             Id = id;
             Dob = dob;
-            FirstName = firstName;
-            LastName = lastName;
+            Name = name;
             Practice = practice;
             Doctorate = doctorate;
             BachelorsDegree = bachelorsDegree;
@@ -41,40 +40,39 @@ namespace DatabaseLibrary.Models
         /// </summary>
         public int Id { get; set; }
 
+        /// <summary>
+        /// date of birth
+        /// </summary>
+
         public DateTime Dob { get; set; }
 
         /// <summary>
-        /// First name used of the client.
+        /// Name used of the dietician.
         /// </summary>
-        public string FirstName { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
-        /// Last name used of the client.
-        /// </summary>
-        public string LastName { get; set; }
-
-        /// <summary>
-        /// Weight of the client.
+        /// practice of the dietician
         /// </summary>
         public string Practice { get; set; }
 
         /// <summary>
-        /// Height of the client.
+        /// doctorate of the dietician
         /// </summary>
         public string Doctorate { get; set; }
 
         /// <summary>
-        /// Waist Circumference of the client.
+        /// bachelors of the dietician
         /// </summary>
         public string BachelorsDegree { get; set; }
 
         /// <summary>
-        /// Hip Circumference of the client.
+        /// associates of the dietician
         /// </summary>
         public string AssociatesDegree { get; set; }
 
         /// <summary>
-        /// Neck Circumference of the client.
+        /// certification of the dietician
         /// </summary>
         public string Certification { get; set; }
 

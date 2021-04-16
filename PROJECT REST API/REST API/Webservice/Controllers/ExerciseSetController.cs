@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -13,9 +13,9 @@ using Newtonsoft.Json.Linq;
 
 namespace Webservice.Controllers
 {
-    [Route("api/clients")]
+    [Route("api/ExerciseSets")]
     [ApiController]
-    public class ClientsController : ControllerBase
+    public class ExerciseSetsController : ControllerBase
     {
 
         #region Initialization
@@ -39,7 +39,7 @@ namespace Webservice.Controllers
         /// Constructor called by the service provider.
         /// Using injection to get the arguments.
         /// </summary>
-        public ClientsController(IHostingEnvironment hostingEnvironment, AppSettingsHelper appSettings,
+        public ExerciseSetsController(IHostingEnvironment hostingEnvironment, AppSettingsHelper appSettings,
             DatabaseContextHelper database)
         {
             HostingEnvironment = hostingEnvironment;
@@ -52,10 +52,10 @@ namespace Webservice.Controllers
 
         // Gets collection.
         [HttpGet]
-        [Route("GetClients")]
-        public ResponseMessage GetClients()
+        [Route("GetExerciseSets")]
+        public ResponseMessage GetExerciseSets()
         {
-            var response = ClientHelper.GetCollection(
+            var response = ExerciseSetHelper.GetCollection(
                 context: Database.DbContext,
                 statusCode: out HttpStatusCode statusCode,
                 includeDetailedErrors: HostingEnvironment.IsDevelopment());
@@ -65,11 +65,11 @@ namespace Webservice.Controllers
 
         // Adds a new instance.
         [HttpPost]
-        [Route("AddClient")]
-        public ResponseMessage AddClient([FromBody] JObject data)
+        [Route("AddExerciseSet")]
+        public ResponseMessage AddExerciseSet([FromBody] JObject data)
         {
 
-            var response = ClientHelper.Add(data,
+            var response = ExerciseSetHelper.Add(data,
                 context: Database.DbContext,
                 statusCode: out HttpStatusCode statusCode,
                 includeDetailedErrors: HostingEnvironment.IsDevelopment());
@@ -79,10 +79,10 @@ namespace Webservice.Controllers
 
 
         [HttpGet]
-        [Route("GetClient")]
-        public ResponseMessage GetClient([FromBody] JObject data)
+        [Route("GetExerciseSet")]
+        public ResponseMessage GetExerciseSet([FromBody] JObject data)
         {
-            var response = ClientHelper.GetClient(
+            var response = ExerciseSetHelper.GetExerciseSet(
                 data,
                 context: Database.DbContext,
                 statusCode: out HttpStatusCode statusCode,
@@ -92,10 +92,10 @@ namespace Webservice.Controllers
         }
 
         [HttpPut]
-        [Route("EditClient")]
-        public ResponseMessage EditClient([FromBody] JObject data)
+        [Route("EditExerciseSet")]
+        public ResponseMessage EditExerciseSet([FromBody] JObject data)
         {
-            var response = ClientHelper.EditClient(
+            var response = ExerciseSetHelper.EditExerciseSet(
                 data,
                 context: Database.DbContext,
                 statusCode: out HttpStatusCode statusCode,
@@ -105,10 +105,10 @@ namespace Webservice.Controllers
         }
 
         [HttpDelete]
-        [Route("DeleteClient")]
-        public ResponseMessage DeleteClient([FromBody] JObject data)
+        [Route("DeleteExerciseSet")]
+        public ResponseMessage DeleteExerciseSet([FromBody] JObject data)
         {
-            var response = ClientHelper.RemoveClient(
+            var response = ExerciseSetHelper.RemoveExerciseSet(
                 data,
                 context: Database.DbContext,
                 statusCode: out HttpStatusCode statusCode,

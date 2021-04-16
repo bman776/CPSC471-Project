@@ -14,23 +14,20 @@ namespace DatabaseLibrary.Helpers
         /// <summary>
         /// Adds a new instance into the database.
         /// </summary>
-        public static Dietician_db Add(DateTime dob, string firstName, string lastName, string practice, string doctorate, string bachelorsDegree, string associateDegree, string certification,
+        public static Dietician_db Add(DateTime dob, string name, string practice, string doctorate, string bachelorsDegree, string associateDegree, string certification,
             DbContext context, out StatusResponse statusResponse)
         {
             try
             {
                 //validate
-                if (string.IsNullOrEmpty(firstName?.Trim()))
-                    throw new StatusException(HttpStatusCode.BadRequest, "Please provide a first name.");
-                if (string.IsNullOrEmpty(lastName?.Trim()))
-                    throw new StatusException(HttpStatusCode.BadRequest, "Please provide a last name.");
+                if (string.IsNullOrEmpty(name?.Trim()))
+                    throw new StatusException(HttpStatusCode.BadRequest, "Please provide a name.");
 
                 //Generate a new instance
                 Dietician_db instance = new Dietician_db
                     (
                         id: Convert.ToInt32(Guid.NewGuid()),
-                        dob,
-                        firstName, lastName,
+                        dob, name,
                         practice, doctorate,
                         bachelorsDegree, associateDegree,
                         certification
@@ -38,18 +35,17 @@ namespace DatabaseLibrary.Helpers
 
                 int rowsAffected = context.ExecuteNonQueryCommand
                     (
-                        commandText: "INSERT INTO dieticians (id, dob, first_name, last_name, practice, doctorate, bachelors_degree, associate_degree, certification) values (@id, @dob, @first_name, @last_name, @practice, @doctorate, @bachelors_degree, @associate_degree, @certification)",
+                        commandText: "BEGIN; INSERT INTO dietician (dieticianId, practice, doctorate, bachelors_degree, associate_degree, certification/diploma) values (@id, @practice, @doctorate, @bachelors_degree, @associate_degree, @certification); INSERT INTO user (userId, name, DoB) values (@id, @name, @dob); COMMIT;",
                         parameters: new Dictionary<string, object>()
                         {
                             { "@id", instance.Id },
                             { "@dob", instance.Dob },
-                            { "@first_name", instance.FirstName },
-                            { "@last_name", instance.LastName },
-                            { "@weight", instance.Practice },
-                            { "@height", instance.Doctorate },
-                            { "@waist_circumference", instance.BachelorsDegree },
-                            { "@hip_circumference", instance.AssociatesDegree },
-                            { "@neck_circumference", instance.Certification }
+                            { "@name", instance.Name },
+                            { "@practice", instance.Practice },
+                            { "@doctorate", instance.Doctorate },
+                            { "@bachelors_degree", instance.BachelorsDegree },
+                            { "@associates_degree", instance.AssociatesDegree },
+                            { "@certification", instance.Certification }
                         },
                         message: out string message
                     );
@@ -57,7 +53,7 @@ namespace DatabaseLibrary.Helpers
                     throw new Exception(message);
 
                 // Return value
-                statusResponse = new StatusResponse("Client added successfully");
+                statusResponse = new StatusResponse("Dietician added successfully");
                 return instance;
 
             }
@@ -79,7 +75,7 @@ namespace DatabaseLibrary.Helpers
                 // Get from database
                 DataTable table = context.ExecuteDataQueryCommand
                     (
-                        commandText: "SELECT * FROM dieticians",
+                        commandText: "SELECT * FROM dietician NATURAL JOIN user",
                         parameters: new Dictionary<string, object>()
                         {
 
@@ -96,8 +92,7 @@ namespace DatabaseLibrary.Helpers
                             (
                                 id: Convert.ToInt32(row["id"]),
                                 dob: Convert.ToDateTime(row["dob"]),
-                                firstName: row["first_name"].ToString(),
-                                lastName: row["last_name"].ToString(),
+                                name: row["name"].ToString(),
                                 practice: row["practice"].ToString(),
                                 doctorate: row["doctorate"].ToString(),
                                 bachelorsDegree: row["bachelors_degree"].ToString(),
@@ -120,7 +115,7 @@ namespace DatabaseLibrary.Helpers
         /// <summary>
         /// Retrieves specific instance
         /// </summary>
-        public static Dietician_db GetClient(int id,
+        public static Dietician_db GetDietician(int id,
             DbContext context, out StatusResponse statusResponse)
         {
             try
@@ -128,7 +123,7 @@ namespace DatabaseLibrary.Helpers
                 // Get from database
                 DataTable table = context.ExecuteDataQueryCommand
                     (
-                        commandText: "SELECT * FROM dieticians WHERE id = @id",
+                        commandText: "SELECT * FROM dietician NATURAL JOIN user WHERE dieticianId = @id",
                         parameters: new Dictionary<string, object>()
                         {
                             { "@id", id },
@@ -144,8 +139,7 @@ namespace DatabaseLibrary.Helpers
                     instances = new Dietician_db(
                             id: Convert.ToInt32(row["id"]),
                             dob: Convert.ToDateTime(row["dob"]),
-                            firstName: row["first_name"].ToString(),
-                            lastName: row["last_name"].ToString(),
+                            name: row["name"].ToString(),
                             practice: row["practice"].ToString(),
                             doctorate: row["doctorate"].ToString(),
                             bachelorsDegree: row["bachelors_degree"].ToString(),
@@ -154,7 +148,7 @@ namespace DatabaseLibrary.Helpers
                     );
 
                 // Return value
-                statusResponse = new StatusResponse("Dieticians list has been retrieved successfully.");
+                statusResponse = new StatusResponse("Dietician has been retrieved successfully.");
                 return instances;
             }
             catch (Exception exception)
@@ -167,14 +161,14 @@ namespace DatabaseLibrary.Helpers
         /// <summary>
         /// Deletes information of given client
         /// </summary>
-        public static Dietician_db DeleteClient(int id,
+        public static Dietician_db DeleteDietician(int id,
             DbContext context, out StatusResponse statusResponse)
         {
 
             // Delete from database
             DataTable table = context.ExecuteDataQueryCommand
                 (
-                    commandText: "DELETE * FROM clients WHERE id = @id",
+                    commandText: "BEGIN; DELETE * FROM dietician WHERE dieticianId = @id; DELETE * FROM user WHERE userId = @id; COMMIT;",
                     parameters: new Dictionary<string, object>()
                     {
                             { "@id", id },
@@ -184,6 +178,38 @@ namespace DatabaseLibrary.Helpers
             try
             {
                 statusResponse = new StatusResponse("Dietician has been removed successfully.");
+                return null;
+            }
+            catch (Exception exception)
+            {
+                statusResponse = new StatusResponse(exception);
+                return null;
+            }
+        }
+
+        public static CardioLog_db EditDietician(int id, DateTime dob, string name, string practice, string doctorate, string bachelorsDegree, string associateDegree, string certification,
+            DbContext context, out StatusResponse statusResponse)
+        {
+            try
+            {
+                // Edit from database
+                DataTable table = context.ExecuteDataQueryCommand
+                    (
+                        commandText: "BEGIN; UPDATE dietician SET practice = @practice, doctorate = @doctorate, bachelors_degree = @bachelors, associate_degree = @associate, certification = @certification WHERE  dieticianId = @id; UPDATE user SET DoB = @dob, name = @name WHERE  userId = @id; COMMIT;",
+                        parameters: new Dictionary<string, object>()
+                        {
+                            { "@id", id },
+                            { "@dob", dob },
+                            { "@name", name },
+                            { "@practice", practice },
+                            { "@doctorate", doctorate },
+                            { "@bachelors_degree", bachelorsDegree },
+                            { "@associates_degree", associateDegree },
+                            { "@certification", certification },
+                        },
+                        message: out string message
+                    );
+                statusResponse = new StatusResponse("Dietician has been edited successfully.");
                 return null;
             }
             catch (Exception exception)

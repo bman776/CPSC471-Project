@@ -94,16 +94,16 @@ namespace Webservice.ControllerHelpers
             return response;
         }
 
-        public static ResponseMessage GetClient(int id,
+        public static ResponseMessage GetClient(JObject data,
             DbContext context, out HttpStatusCode statusCode, bool includeDetailedErrors = false)
         {
-
-            var dbInstance = DatabaseLibrary.Helpers.ClientHelper_db.GetClient(int id,
+            int id = (data.ContainsKey("id")) ? data.GetValue("id").Value<int>() : 0;
+            var dbInstance = DatabaseLibrary.Helpers.ClientHelper_db.GetClient(id,
                 context, out StatusResponse statusResponse);
 
             var instances = dbInstances?.Select(x => Convert(x)).ToList();
 
-            se.StatusCode == HttpStatusCode.InternalServerError
+            if (statusResponse.StatusCode == HttpStatusCode.InternalServerError
                 && !includeDetailedErrors)
                 statusResponse.Message = "Something went wrong while retrieving the client";
 
@@ -118,15 +118,17 @@ namespace Webservice.ControllerHelpers
             return response;
         }
 
-        public static ResponseMessage RemoveClient(int id,
+        public static ResponseMessage RemoveClient(JObject data,
             DbContext context, out HttpStatusCode statusCode, bool includeDetailedErrors = false)
         {
-            var dbInstance = DatabaseLibrary.Helpers.ClientHelper_db.DeleteClient(int id,
+
+            int id = (data.ContainsKey("id")) ? data.GetValue("id").Value<int>() : 0;
+            var dbInstance = DatabaseLibrary.Helpers.ClientHelper_db.DeleteClient(id,
                 context, out StatusResponse statusResponse);
 
             var instances = dbInstances?.Select(x => Convert(x)).ToList();
 
-            se.StatusCode == HttpStatusCode.InternalServerError
+            if (statusResponse.StatusCode == HttpStatusCode.InternalServerError
                 && !includeDetailedErrors)
                 statusResponse.Message = "Something went wrong while removing the client";
 
@@ -140,15 +142,21 @@ namespace Webservice.ControllerHelpers
             return response;
         }
 
-        public static ResponseMessage EditClient(int id, double weight, double height, double waist, double hip, double neck,
+        public static ResponseMessage EditClient(JObject data,
             DbContext context, out HttpStatusCode statusCode, bool includeDetailedErrors = false)
         {
-            var dbInstance = DatabaseLibrary.Helpers.ClientHelper_db.EditClient(int id, double weight, double height, double waist, double hip, double neck,
+            int id = (data.ContainsKey("id")) ? data.GetValue("id").Value<int>() : 0;
+            double weight = (data.ContainsKey("weight")) ? data.GetValue("weight").Value<double>() : 0.0;
+            double id = (data.ContainsKey("height")) ? data.GetValue("height").Value<double>() : 0.0;
+            double id = (data.ContainsKey("waist")) ? data.GetValue("waist").Value<double>() : 0.0;
+            double id = (data.ContainsKey("hip")) ? data.GetValue("hip").Value<double>() : 0.0;
+            double id = (data.ContainsKey("neck")) ? data.GetValue("neck").Value<double>() : 0.0;
+            var dbInstance = DatabaseLibrary.Helpers.ClientHelper_db.EditClient(id, weight, height, waist, hip, neck,
                 context, out StatusResponse statusResponse);
 
             var instances = dbInstances?.Select(x => Convert(x)).ToList();
 
-            se.StatusCode == HttpStatusCode.InternalServerError
+            if (statusResponse.StatusCode == HttpStatusCode.InternalServerError
                 && !includeDetailedErrors)
                 statusResponse.Message = "Something went wrong while editting the client";
 

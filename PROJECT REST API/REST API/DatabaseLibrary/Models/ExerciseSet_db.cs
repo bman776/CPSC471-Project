@@ -11,6 +11,7 @@ namespace DatabaseLibrary.Models
 
         /// <summary>
         /// Default constructor. 
+        /// Default constructor. 
         /// Need for serialization purposes.
         /// </summary>
         public ExerciseSet_db()
@@ -20,12 +21,12 @@ namespace DatabaseLibrary.Models
         /// <summary>
         /// Fields constructor.
         /// </summary>
-        public ExerciseSet_db(int id, DateTime date, TimeSpan time, int caloriesBurned, string type, int reps, int setNumber)
+        public ExerciseSet_db(int id, DateTime date, TimeSpan time, int weight, string type, int reps, int setNumber)
         {
             Id = id;
             Date = date;
             Time = time;
-            CaloriesBurned = caloriesBurned;
+            Weight = weight;
             Type = type;
             Reps = reps;
             SetNumber = setNumber;
@@ -54,7 +55,7 @@ namespace DatabaseLibrary.Models
         /// <summary>
         /// Instructor's training type
         /// </summary>
-        public int CaloriesBurned { get; set; }
+        public int Weight { get; set; }
 
         public string Type { get; set; }
 

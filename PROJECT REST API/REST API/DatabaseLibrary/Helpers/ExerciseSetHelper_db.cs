@@ -15,7 +15,7 @@ namespace DatabaseLibrary.Helpers
         /// <summary>
         /// Adds a new instance into the database.
         /// </summary>
-        public static ExerciseSet_db Add(int id, DateTime date, TimeSpan time, int caloriesBurned, string type, int reps, int setNumber,
+        public static ExerciseSet_db Add(int id, DateTime date, TimeSpan time, int weight, string type, int reps, int setNumber,
             DbContext context, out StatusResponse statusResponse)
         {
             try
@@ -30,19 +30,19 @@ namespace DatabaseLibrary.Helpers
                 //Generate a new instance
                 ExerciseSet_db instance = new ExerciseSet_db
                 (
-                    id, date, time, caloriesBurned, type, reps, setNumber
+                    id, date, time, weight, type, reps, setNumber
                 );
 
                 //Add to database
                 int rowsAffected = context.ExecuteNonQueryCommand
                     (
-                        commandText: "INSERT INTO exerciseSets (id, date, time, calories_burned, type, reps, set_number) values (@id, @date, @time, @calories_burned, @type, @reps, @set_number",
+                        commandText: "INSERT INTO exercise_set (clientId, workoutLog_date, workoutLog_time, type, set_number, reps, weight) values (@id, @date, @time, @type, @set_number, @reps, @weight",
                         parameters: new Dictionary<string, object>()
                         {
                         { "@id", instance.Id },
                         { "@date", instance.Date },
                         { "@time", instance.Time },
-                        { "@calories_burned", instance.CaloriesBurned },
+                        { "@weight", instance.Weight },
                         { "@type", instance.Type },
                         { "@reps", instance.Reps },
                         { "@set_number", instance.SetNumber },
@@ -75,7 +75,7 @@ namespace DatabaseLibrary.Helpers
                 //Get from database
                 DataTable table = context.ExecuteDataQueryCommand
                     (
-                        commandText: "SELECT * FROM exerciseSets",
+                        commandText: "SELECT * FROM exercise_set",
                         parameters: new Dictionary<string, object>()
                         {
 
@@ -93,7 +93,7 @@ namespace DatabaseLibrary.Helpers
                             id: Convert.ToInt32(row["id"]),
                             date: Convert.ToDateTime(row["date"]),
                             time: TimeSpan.Parse(row["time"].ToString()),
-                            caloriesBurned: Convert.ToInt32(row["calories_burned"]),
+                            weight: Convert.ToInt32(row["weight"]),
                             type: row["type"].ToString(),
                             reps: Convert.ToInt32(row["reps"]),
                             setNumber: Convert.ToInt32(row["set_number"])
@@ -122,7 +122,7 @@ namespace DatabaseLibrary.Helpers
                 //Get from database
                 DataTable table = context.ExecuteDataQueryCommand
                     (
-                        commandText: "SELECT * FROM exerciseSets WHERE id = @id, date = @date, time = @time",
+                        commandText: "SELECT * FROM exercise_set WHERE clientId = @id, workoutLog_date = @date, workoutLog_time = @time",
                         parameters: new Dictionary<string, object>()
                         {
                             { "@id", id },
@@ -143,7 +143,7 @@ namespace DatabaseLibrary.Helpers
                             id: Convert.ToInt32(row["id"]),
                             date: Convert.ToDateTime(row["date"]),
                             time: TimeSpan.Parse(row["time"].ToString()),
-                            caloriesBurned: Convert.ToInt32(row["calories_burned"]),
+                            weight: Convert.ToInt32(row["weight"]),
                             type: row["type"].ToString(),
                             reps: Convert.ToInt32(row["reps"]),
                             setNumber: Convert.ToInt32(row["set_number"])
@@ -172,7 +172,7 @@ namespace DatabaseLibrary.Helpers
                 // Delete from database
                 DataTable table = context.ExecuteDataQueryCommand
                     (
-                        commandText: "DELETE * FROM exerciseSets WHERE id = @id, date = @date, time = @time",
+                        commandText: "DELETE * FROM exercise_set WHERE clientId = @id, workoutLog_date = @date, workouLog_time = @time",
                         parameters: new Dictionary<string, object>()
                         {
                             { "@id", id },
@@ -182,6 +182,37 @@ namespace DatabaseLibrary.Helpers
                         message: out string message
                     );
                 statusResponse = new StatusResponse("Exercise Set has been removed successfully.");
+                return null;
+            }
+            catch (Exception exception)
+            {
+                statusResponse = new StatusResponse(exception);
+                return null;
+            }
+        }
+
+        public static CardioLog_db EditExerciseSet(int id, DateTime date, TimeSpan time, int type, string setNumber, int reps, int weight,
+            DbContext context, out StatusResponse statusResponse)
+        {
+            try
+            {
+                // Edit from database
+                DataTable table = context.ExecuteDataQueryCommand
+                    (
+                        commandText: "UPDATE exercise_set SET type = @type, set_number = @sets, reps = @reps, weight = @weight WHERE  clientId = @id, workoutLog_date = @date, workoutLog_time = @time",
+                        parameters: new Dictionary<string, object>()
+                        {
+                            { "@id", id },
+                            { "@date", date },
+                            { "@time", time },
+                            { "@type", type },
+                            { "@sets", setNumber },
+                            { "@reps", reps },
+                            { "@weight", weight }
+                        },
+                        message: out string message
+                    );
+                statusResponse = new StatusResponse("Exercise Set has been edited successfully.");
                 return null;
             }
             catch (Exception exception)

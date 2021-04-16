@@ -15,23 +15,21 @@ namespace DatabaseLibrary.Helpers
         /// <summary>
         /// Adds a new instance into the database.
         /// </summary>
-        public static Client_db Add(DateTime dob, string firstName, string lastName, double weight, double height, double waistCircumference, double hipCircumference, double neckCircumference,
+        public static Client_db Add(DateTime dob, string name, double weight, double height, double waistCircumference, double hipCircumference, double neckCircumference,
             DbContext context, out StatusResponse statusResponse)
         {
             try
             {
                 // Validate
-                if (string.IsNullOrEmpty(firstName?.Trim()))
-                    throw new StatusException(HttpStatusCode.BadRequest, "Please provide a first name.");
-                if (string.IsNullOrEmpty(lastName?.Trim()))
-                    throw new StatusException(HttpStatusCode.BadRequest, "Please provide a last name.");
+                if (string.IsNullOrEmpty(name?.Trim()))
+                    throw new StatusException(HttpStatusCode.BadRequest, "Please provide a name.");
 
                 // Generate a new instance
                 Client_db instance = new Client_db
                     (
                         id: Convert.ToInt32(Guid.NewGuid()), //This can be ignored is PK in your DB is auto increment
                         dob,
-                        firstName, lastName,
+                        name,
                         weight, height,
                         waistCircumference, hipCircumference, neckCircumference
                     );
@@ -95,8 +93,7 @@ namespace DatabaseLibrary.Helpers
                             (
                                 id: Convert.ToInt32(row["id"]),
                                 dob: Convert.ToDateTime(row["dob"]),
-                                firstName: row["first_name"].ToString(), 
-                                lastName: row["last_name"].ToString(),
+                                name: row["name"].ToString(),
                                 weight: Convert.ToDouble(row["weight"]),
                                 height: Convert.ToDouble(row["height"]),
                                 waistCircumference: Convert.ToDouble(row["waist_circumference"]),
@@ -143,8 +140,7 @@ namespace DatabaseLibrary.Helpers
                         instances = new Client_db (
                                 id: Convert.ToInt32(row["id"]),
                                 dob: Convert.ToDateTime(row["dob"]),
-                                firstName: row["first_name"].ToString(),
-                                lastName: row["last_name"].ToString(),
+                                name: row["name"].ToString(),
                                 weight: Convert.ToDouble(row["weight"]),
                                 height: Convert.ToDouble(row["height"]),
                                 waistCircumference: Convert.ToDouble(row["waist_circumference"]),
