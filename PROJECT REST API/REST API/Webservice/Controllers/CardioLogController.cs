@@ -13,9 +13,9 @@ using Newtonsoft.Json.Linq;
 
 namespace Webservice.Controllers
 {
-    [Route("api/clients")]
+    [Route("api/CardioLogs")]
     [ApiController]
-    public class ClientsController : ControllerBase
+    public class CardioLogsController : ControllerBase
     {
 
         #region Initialization
@@ -39,7 +39,7 @@ namespace Webservice.Controllers
         /// Constructor called by the service provider.
         /// Using injection to get the arguments.
         /// </summary>
-        public ClientsController(IHostingEnvironment hostingEnvironment, AppSettingsHelper appSettings,
+        public CardioLogsController(IHostingEnvironment hostingEnvironment, AppSettingsHelper appSettings,
             DatabaseContextHelper database)
         {
             HostingEnvironment = hostingEnvironment;
@@ -53,7 +53,7 @@ namespace Webservice.Controllers
         // Gets collection.
         [HttpGet]
         [Route("GetCardioLogs")]
-        public ResponseMessage GetClients()
+        public ResponseMessage GetCardioLogs()
         {
             var response = CardioLogHelper.GetCollection(
                 context: Database.DbContext,
@@ -80,10 +80,10 @@ namespace Webservice.Controllers
 
         [HttpGet]
         [Route("GetCardioLog")]
-        public ResponseMessage GetCardioLog(int id, DateTime date, TimeSpan time)
+        public ResponseMessage GetCardioLog([FromBody] JObject data)
         {
-            var response = ClientHelper.GetClient(
-                int id, DateTime date, TimeSpan time,
+            var response = CardioLogHelper.GetCardioLog(
+                data,
                 context: Database.DbContext,
                 statusCode: out HttpStatusCode statusCode,
                 includeDetailedErrors: HostingEnvironment.IsDevelopment());
@@ -95,8 +95,8 @@ namespace Webservice.Controllers
         [Route("EditCardioLog")]
         public ResponseMessage EditCardioLog([FromBody] JObject data)
         {
-            var response = ClientHelper.EditClient(
-                int id, string name, DateTime date, TimeSpan startTime, TimeSpan endTime, int caloriesBurned, string exerciseType,
+            var response = CardioLogHelper.EditCardioLog(
+                data,
                 context: Database.DbContext,
                 statusCode: out HttpStatusCode statusCode,
                 includeDetailedErrors: HostingEnvironment.IsDevelopment());
@@ -108,8 +108,8 @@ namespace Webservice.Controllers
         [Route("DeleteCardioLog")]
         public ResponseMessage DeleteCardioLog([FromBody] JObject data)
         {
-            var response = ClientHelper.RemoveClient(
-                int id, DateTime date, TimeSpan time,
+            var response = CardioLogHelper.RemoveCardioLog(
+                data,
                 context: Database.DbContext,
                 statusCode: out HttpStatusCode statusCode,
                 includeDetailedErrors: HostingEnvironment.IsDevelopment());

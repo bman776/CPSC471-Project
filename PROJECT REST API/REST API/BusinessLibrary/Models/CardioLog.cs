@@ -27,7 +27,7 @@ namespace BusinessLibrary.Models
         }
 
         public CardioLog(CardioLog instance)
-            : this(instance.Id, instance.LogDate, instance.Time, instance.CaloriesBurned, instance.CardioType)
+            : this(instance.Id, instance.LogName, instance.LogDate, instance.StartTime, instance.EndTime, instance.CaloriesBurned, instance.CardioType)
         {
         }
 
