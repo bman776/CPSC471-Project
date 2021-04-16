@@ -46,6 +46,11 @@
                         <input type ="text" class="form-control" id="mealTime" name="time" placeholder="<?php echo date("h:i:s A")?>"/>
                     </div>
                 </div>
+                <div class="form-group">
+                    <div class="col-lg-10 col-lg-offset-2">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
             </fieldset>
         </form>
 	</div>

@@ -1,3 +1,5 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <?php $dir_name = dirname($_SERVER['PHP_SELF']); ?>
 <nav class="navbar navbar-default">
      <div class="container">
@@ -14,7 +16,13 @@
           <ul class="nav navbar-nav">
             <li><a href="<?php echo ROOT_URL; ?>">Home</a></li>
             <li><a href="<?php echo ROOT_URL; ?>">Account</a></li>
-            <li><a href="<?php echo ROOT_URL; ?>">Pages</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Pages <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="<?php echo $dir_name;?>">View Pages</a></li>
+                    <li><a href="<?php echo $dir_name . "/" . "addPage.php";?>">Add New Page</a></li>
+                </ul>
+            </li>
 			      <li><a href="<?php echo ROOT_URL; ?>">My Nutrition Plans</a></li>
             <li><a href="<?php echo $dir_name . "/" . "addPlan.php";?>">Add New Plan</a></li>
           </ul>

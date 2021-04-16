@@ -1,8 +1,8 @@
 <?php
 	//Establish connection
-	$host = "localhost:3308";
+	$host = "";
 	$user = "root";
-	$pwd = "";
+	$pwd = "root";
 	$db = "cpsc471_project_db";
 	
 	//Connect to DataBase

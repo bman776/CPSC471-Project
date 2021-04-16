@@ -35,7 +35,6 @@
 <?php include('inc/clientHeader.php'); ?>
 	<div class="container">
 		<h1>My Workout Logs</h1>
-        <legend>Please select the Workout log you wish to view.</legend>
         <?php foreach($workout_log as $log) : ?>
             <div>
                 <h3><?php echo $log['log_name']; ?></h3>
