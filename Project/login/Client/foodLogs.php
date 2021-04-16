@@ -1,19 +1,15 @@
 <?php
 	require('../config/config.php');
 	require('../config/db.php');
+    $dir_name = dirname($_SERVER['PHP_SELF']); 
 
     //get session
 	session_start();
 	$name = $_SESSION['name'];
 	$id = $_SESSION['id'];
 
-    //get user workoutLog selection
-    $log_name = $_GET['log_name'];
-    $log_date = $_GET['log_date'];
-    $log_time = $_GET['log_time'];
-
     //query DB (retrieve workout logs)
-    $query = "SELECT * FROM exercise_set WHERE clientID = '$id' AND workoutLog_date = '$log_date' AND workoutLog_time = '$log_time'";
+    $query = "SELECT * FROM food_log WHERE clientID = '$id'";
     $result = mysqli_query($conn, $query);
 
     //evaluate result
@@ -25,7 +21,7 @@
             echo "You currently have no workoutlogs";
         } else {
             //fetch data
-            $exercise_set = mysqli_fetch_all($result, MYSQLI_ASSOC);
+            $food_log = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
             //free result
             mysqli_free_result($result);
@@ -38,15 +34,18 @@
 
 <?php include('inc/clientHeader.php'); ?>
 	<div class="container">
-		<h1><?php echo $log_name?></h1>
-        <?php foreach($exercise_set as $set) : ?>
+		<h1>My Food Logs</h1>
+        <?php foreach($food_log as $log) : ?>
             <div>
-                <h3><?php echo $set['type']; ?></h3>
-                <h4>set#: <?php echo $set['set_number']; ?></h4>
-                <h4>reps: <?php echo $set['reps']; ?></h4>
-                <h4>weight: <?php echo $set['weight']; ?></h4>
+                <h3><?php echo $log['meal_desc']; ?></h3>
+                <h4>protein: <?php echo $log['protein']; ?></h4>
+                <h4>carbohydrates: <?php echo $log['carbohydrates']; ?></h4>
+                <h4>fat: <?php echo $log['fat']; ?></h4>
+                <h4>calories: <?php echo $log['calories']; ?></h4>
+
+                <small>consumed on: <?php echo $log['log_date']; ?> @ <?php echo $log['log_time']; ?> </small>
+              
             </div>
         <?php endforeach; ?>
-        
 	</div>
 <?php include('../inc/footer.php'); ?>

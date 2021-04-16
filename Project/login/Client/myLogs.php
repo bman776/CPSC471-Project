@@ -14,13 +14,13 @@
             <a href="<?php echo $dir_name . "/workoutLogs.php";?>" class="btn btn-primary">Workout Log</a>
         </li>
         <li class="list-group-item">
-            <a href="#" class="btn btn-primary">Cardio Log</a>
+            <a href="<?php echo $dir_name . "/cardioLogs.php";?>" class="btn btn-primary">Cardio Log</a>
         </li>
         <li class="list-group-item">
-            <a href="#" class="btn btn-primary">Food Log</a>
+            <a href="<?php echo $dir_name . "/foodLogs.php";?>" class="btn btn-primary">Food Log</a>
         </li>
         <li class="list-group-item">
-            <a href="#" class="btn btn-primary">Sleep Log</a>
+            <a href="<?php echo $dir_name . "/sleepLogs.php";?>" class="btn btn-primary">Sleep Log</a>
         </li>
         </ul>
 	</div>
