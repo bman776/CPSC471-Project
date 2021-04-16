@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DatabaseLibrary.Models
 {
-    class SleepLog_db
+    public class SleepLog_db
     {
 
         #region Constructors

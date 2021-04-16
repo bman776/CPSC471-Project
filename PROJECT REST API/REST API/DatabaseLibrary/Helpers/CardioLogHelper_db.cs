@@ -9,13 +9,12 @@ using System.Text;
 
 namespace DatabaseLibrary.Helpers
 {
-    public class SleepLogHelper_db
+    public class CardioLogHelper_db
     {
-
         /// <summary>
         /// Adds a new instance into the database.
         /// </summary>
-        public static SleepLog_db Add(int id, DateTime date, TimeSpan time, TimeSpan sleepDuration,
+        public static CardioLog_db Add(int id, DateTime date, TimeSpan duration, int caloriesBurned, string exerciseType,
             DbContext context, out StatusResponse statusResponse)
         {
             try
@@ -24,25 +23,26 @@ namespace DatabaseLibrary.Helpers
                     throw new StatusException(HttpStatusCode.BadRequest, "Please provide a valid id");
                 if (date == DateTime.MinValue)
                     throw new StatusException(HttpStatusCode.BadRequest, "Please provide a valid date");
-                if (sleepDuration == TimeSpan.Zero)
+                if (duration == TimeSpan.Zero)
                     throw new StatusException(HttpStatusCode.BadRequest, "Please provide a valid duration");
 
                 //Generate a new instance
-                SleepLog_db instance = new SleepLog_db
+                CardioLog_db instance = new CardioLog_db
                 (
-                    id, date, time, sleepDuration
+                    id, date, duration, caloriesBurned, exerciseType
                 );
 
                 //Add to database
                 int rowsAffected = context.ExecuteNonQueryCommand
                     (
-                        commandText: "INSERT INTO sleepLogs (id, date, time, sleep_duration) values (@id, @date, @time, @sleep_duration)",
+                        commandText: "INSERT INTO cardioLogs (id, date, duration, calories_burned, exercise_type) values (@id, @date, @duration, @calories_burned, @exercise_type)",
                         parameters: new Dictionary<string, object>()
                         {
                             { "@id", instance.Id },
-                            { "@date", instance.Date },
+                            { "@date", instance.LogDate },
                             { "@time", instance.Time },
-                            { "@sleep_duration", instance.SleepDuration }
+                            { "@calories_burned", instance.CaloriesBurned },
+                            { "@exercise_type", instance.CardioType },
                         },
                         message: out string message
                     );
@@ -50,7 +50,7 @@ namespace DatabaseLibrary.Helpers
                     throw new Exception(message);
 
                 //Return value
-                statusResponse = new StatusResponse("Sleep Log added successfully");
+                statusResponse = new StatusResponse("Cardio Log added successfully");
                 return instance;
             }
             catch (Exception exception)
@@ -63,7 +63,7 @@ namespace DatabaseLibrary.Helpers
         /// <summary>
         /// Retrieves a list of instances
         /// </summary>
-        public static List<SleepLog_db> GetCollection (
+        public static List<CardioLog_db> GetCollection(
             DbContext context, out StatusResponse statusResponse)
         {
             try
@@ -71,7 +71,7 @@ namespace DatabaseLibrary.Helpers
                 // Get from database
                 DataTable table = context.ExecuteDataQueryCommand
                     (
-                        commandText: "SELECT * FROM sleepLogs",
+                        commandText: "SELECT * FROM cardioLogs",
                         parameters: new Dictionary<string, object>()
                         {
 
@@ -82,14 +82,15 @@ namespace DatabaseLibrary.Helpers
                     throw new Exception(message);
 
                 //Parse data
-                List<SleepLog_db> instances = new List<SleepLog_db>();
+                List<CardioLog_db> instances = new List<CardioLog_db>();
                 foreach (DataRow row in table.Rows)
-                    instances.Add(new SleepLog_db
+                    instances.Add(new CardioLog_db
                         (
                             id: Convert.ToInt32(row["id"]),
-                            date: Convert.ToDateTime(row["date"]),
+                            logDate: Convert.ToDateTime(row["date"]),
                             time: TimeSpan.Parse(row["time"].ToString()),
-                            sleepDuration: TimeSpan.Parse(row["sleep_duration"].ToString())
+                            caloriesBurned: Convert.ToInt32(row["calories_burned"]),
+                            cardioType: row["exercise_type"].ToString()
                         )
                     );
 
@@ -107,7 +108,7 @@ namespace DatabaseLibrary.Helpers
         /// <summary>
         /// Retrieves specific instance
         /// </summary>
-        public static SleepLog_db GetSleepLog(int id, DateTime date, TimeSpan time,
+        public static CardioLog_db GetCardioLog(int id, DateTime date, TimeSpan time,
             DbContext context, out StatusResponse statusResponse)
         {
             try
@@ -115,28 +116,29 @@ namespace DatabaseLibrary.Helpers
                 //Get from database
                 DataTable table = context.ExecuteDataQueryCommand
                     (
-                        commandText: "SELECT * FROM sleepLogs WHERE id = @id, date = @date, time = @time",
+                        commandText: "SELECT * FROM cardioLogs WHERE id = @id, date = @date, time = @time",
                         parameters: new Dictionary<string, object>()
                         {
                             { "@id", id },
                             { "@date", date },
                             { "@time", time }
                         },
-                        message:out string message
+                        message: out string message
                     );
 
                 if (table == null)
                     throw new Exception(message);
 
                 //Parse data
-                SleepLog_db instance = new SleepLog_db();
+                CardioLog_db instance = new CardioLog_db();
                 foreach (DataRow row in table.Rows)
-                    instance = new SleepLog_db
+                    instance = new CardioLog_db
                         (
                             id: Convert.ToInt32(row["id"]),
-                            date: Convert.ToDateTime(row["date"]),
+                            logDate: Convert.ToDateTime(row["date"]),
                             time: TimeSpan.Parse(row["time"].ToString()),
-                            sleepDuration: TimeSpan.Parse(row["sleep_duration"].ToString())
+                            caloriesBurned: Convert.ToInt32(row["calories_burned"]),
+                            cardioType: row["exercise_type"].ToString()
                         );
 
                 //Return value
@@ -153,7 +155,7 @@ namespace DatabaseLibrary.Helpers
         /// <summary>
         /// Deletes information of given client
         /// </summary>
-        public static SleepLog_db DeleteSleepLog(int id, DateTime date, TimeSpan time,
+        public static CardioLog_db DeleteCardioLog(int id, DateTime date, TimeSpan time,
             DbContext context, out StatusResponse statusResponse)
         {
             try
@@ -161,7 +163,7 @@ namespace DatabaseLibrary.Helpers
                 // Delete from database
                 DataTable table = context.ExecuteDataQueryCommand
                     (
-                        commandText: "DELETE * FROM sleepLogs WHERE id = @id, date = @date, time = @time",
+                        commandText: "DELETE * FROM cardioLogs WHERE id = @id, date = @date, time = @time",
                         parameters: new Dictionary<string, object>()
                         {
                             { "@id", id },
@@ -170,7 +172,36 @@ namespace DatabaseLibrary.Helpers
                         },
                         message: out string message
                     );
-                statusResponse = new StatusResponse("Sleep Log has been removed successfully.");
+                statusResponse = new StatusResponse("Cardio Log has been removed successfully.");
+                return null;
+            }
+            catch (Exception exception)
+            {
+                statusResponse = new StatusResponse(exception);
+                return null;
+            }
+        }
+
+        public static CardioLog_db EditCardioLog(int id, DateTime date, TimeSpan duration, int caloriesBurned, string exerciseType,
+            DbContext context, out StatusResponse statusResponse)
+        {
+            try
+            {
+                // Edit from database
+                DataTable table = context.ExecuteDataQueryCommand
+                    (
+                        commandText: "UPDATE cardioLogs SET date = @date, time = @time, calories_burned = @calories_burned, exercise_type = @exercise_type WHERE  id = @id, date = @date, time = @time",
+                        parameters: new Dictionary<string, object>()
+                        {
+                            { "@id", id },
+                            { "@date", date },
+                            { "@time", duration },
+                            { "@calories_burned", caloriesBurned },
+                            { "@exercise_type", exerciseType },
+                        },
+                        message: out string message
+                    );
+                statusResponse = new StatusResponse("Cardio Log has been removed successfully.");
                 return null;
             }
             catch (Exception exception)

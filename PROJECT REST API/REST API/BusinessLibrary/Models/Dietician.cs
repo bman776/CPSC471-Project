@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BusinessLibrary.Models
 {
-    class Dietician
+    public class Dietician
     {
         #region Contructors
 

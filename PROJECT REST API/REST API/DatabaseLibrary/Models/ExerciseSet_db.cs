@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DatabaseLibrary.Models
 {
-    class ExerciseSet_db
+    public class ExerciseSet_db
     {
 
         #region Contructors
