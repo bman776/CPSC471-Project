@@ -14,7 +14,7 @@ namespace DatabaseLibrary.Helpers
         /// <summary>
         /// Adds a new instance into the database.
         /// </summary>
-        public static CardioLog_db Add(int id, string logName, DateTime logDate, TimeSpan startTime, TimeSpan endTime, int caloriesBurned, string exerciseType,
+        public static CardioLog_db Add(int id, string logName, DateTime logDate, TimeSpan startTime, TimeSpan endTime, int caloriesBurned, string cardioType,
             DbContext context, out StatusResponse statusResponse)
         {
             try
@@ -31,7 +31,7 @@ namespace DatabaseLibrary.Helpers
                 //Generate a new instance
                 CardioLog_db instance = new CardioLog_db
                 (
-                    id, date, duration, caloriesBurned, exerciseType
+                    id, logName, logDate, startTime, endTime, caloriesBurned, cardioType
                 );
 
                 //Add to database
@@ -41,7 +41,7 @@ namespace DatabaseLibrary.Helpers
                         parameters: new Dictionary<string, object>()
                         {
                             { "@id", instance.Id },
-                            { "@name", instance.Name },
+                            { "@name", instance.LogName },
                             { "@date", instance.LogDate },
                             { "@start", instance.StartTime },
                             { "@end", instance.EndTime },
@@ -67,7 +67,7 @@ namespace DatabaseLibrary.Helpers
         /// <summary>
         /// Retrieves a list of instances
         /// </summary>
-        public static List<CardioLog_db> GetCollection( int id
+        public static List<CardioLog_db> GetCollection( int id,
             DbContext context, out StatusResponse statusResponse)
         {
             try
@@ -91,7 +91,7 @@ namespace DatabaseLibrary.Helpers
                     instances.Add(new CardioLog_db
                         (
                             id: Convert.ToInt32(row["id"]),
-                            name: row["name"].ToString(),
+                            logName: row["name"].ToString(),
                             logDate: Convert.ToDateTime(row["date"]),
                             startTime: TimeSpan.Parse(row["start_time"].ToString()),
                             endTime: TimeSpan.Parse(row["end_time"].ToString()),
@@ -141,7 +141,7 @@ namespace DatabaseLibrary.Helpers
                     instance = new CardioLog_db
                         (
                             id: Convert.ToInt32(row["id"]),
-                            name: row["name"].ToString(),
+                            logName: row["name"].ToString(),
                             logDate: Convert.ToDateTime(row["date"]),
                             startTime: TimeSpan.Parse(row["start_time"].ToString()),
                             endTime: TimeSpan.Parse(row["end_time"].ToString()),

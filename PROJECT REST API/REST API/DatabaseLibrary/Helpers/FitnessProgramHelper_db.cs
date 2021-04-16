@@ -14,11 +14,13 @@ namespace DatabaseLibrary.Helpers
         /// <summary>
         /// Adds a new instance into the database.
         /// </summary>
-        public static FitnessProgram_db Add(string name, string description, string routine, DateTime creationDate, string video, string type, string modality,
+        public static FitnessProgram_db Add(int id, string name, string description, string routine, DateTime creationDate, string video, string type, string modality,
             DbContext context, out StatusResponse statusResponse)
         {
             try
             {
+                if (id == 0)
+                    throw new StatusException(HttpStatusCode.BadRequest, "Please provide an id.");
                 if (string.IsNullOrEmpty(name?.Trim()))
                     throw new StatusException(HttpStatusCode.BadRequest, "Please provide a name.");
                 if (string.IsNullOrEmpty(routine?.Trim()))
@@ -31,14 +33,13 @@ namespace DatabaseLibrary.Helpers
                 //Generate a new instance
                 FitnessProgram_db instance = new FitnessProgram_db
                 (
-                    id: Convert.ToInt32(Guid.NewGuid()),
-                    name, description, routine, creationDate, video, type, modality
+                    id, name, description, routine, creationDate, video, type, modality
                 );
 
                 //Add to database
                 int rowsAffected = context.ExecuteNonQueryCommand
                     (
-                        commandText: "INSERT INTO fitnessPrograms (id, name, description, routine, creation_date, video, type, modality) values (@id, @name, @description, @routine, @creation_date, @video, @type, @modality)",
+                        commandText: "INSERT INTO fitness_prgrm (instructor_authorId, name, description, routine, creation_date, inst_vid, training_type, exercise_modality) values (@id, @name, @description, @routine, @creation_date, @video, @type, @modality)",
                         parameters: new Dictionary<string, object>()
                         {
                             { "@id", instance.Id },
@@ -77,7 +78,7 @@ namespace DatabaseLibrary.Helpers
                 // Get from database
                 DataTable table = context.ExecuteDataQueryCommand
                     (
-                        commandText: "SELECT * FROM fitnessPrograms",
+                        commandText: "SELECT * FROM fitness_prgrm",
                         parameters: new Dictionary<string, object>()
                         {
 
@@ -92,14 +93,14 @@ namespace DatabaseLibrary.Helpers
                 foreach (DataRow row in table.Rows)
                     instances.Add(new FitnessProgram_db
                         (
-                            id: Convert.ToInt32(row["id"]),
+                            id: Convert.ToInt32(row["instructor_authorId"]),
                             name: row["name"].ToString(),
                             description: row["description"].ToString(),
                             routine: row["routine"].ToString(),
-                            creationDate: Convert.ToDateTime(row["name"]),
-                            video: row["video"].ToString(),
-                            type: row["type"].ToString(),
-                            modality: row["modality"].ToString()
+                            creationDate: Convert.ToDateTime(row["creation_date"]),
+                            video: row["inst_vid"].ToString(),
+                            type: row["training_type"].ToString(),
+                            modality: row["exercise_modality"].ToString()
                         )
                     );
 
@@ -125,7 +126,7 @@ namespace DatabaseLibrary.Helpers
                 //Get from database
                 DataTable table = context.ExecuteDataQueryCommand
                     (
-                        commandText: "SELECT * FROM fitnessPrograms WHERE id = @id, name = @name",
+                        commandText: "SELECT * FROM fitness_prgrm WHERE instructor_authorId = @id, name = @name",
                         parameters: new Dictionary<string, object>()
                         {
                             { "@id", id },
@@ -142,14 +143,14 @@ namespace DatabaseLibrary.Helpers
                 foreach (DataRow row in table.Rows)
                     instance = new FitnessProgram_db
                         (
-                            id: Convert.ToInt32(row["id"]),
+                            id: Convert.ToInt32(row["instructor_authorId"]),
                             name: row["name"].ToString(),
                             description: row["description"].ToString(),
                             routine: row["routine"].ToString(),
-                            creationDate: Convert.ToDateTime(row["name"]),
-                            video: row["video"].ToString(),
-                            type: row["type"].ToString(),
-                            modality: row["modality"].ToString()
+                            creationDate: Convert.ToDateTime(row["creation_date"]),
+                            video: row["inst_vid"].ToString(),
+                            type: row["training_type"].ToString(),
+                            modality: row["exercise_modality"].ToString()
                         );
 
                 //Return value
@@ -174,7 +175,7 @@ namespace DatabaseLibrary.Helpers
                 // Delete from database
                 DataTable table = context.ExecuteDataQueryCommand
                     (
-                        commandText: "DELETE * FROM fitnessPrograms WHERE id = @id, name = @name",
+                        commandText: "DELETE * FROM fitness_prgrm WHERE instructor_authorId = @id, name = @name",
                         parameters: new Dictionary<string, object>()
                         {
                             { "@id", id },
@@ -200,7 +201,7 @@ namespace DatabaseLibrary.Helpers
                 // Edit from database
                 DataTable table = context.ExecuteDataQueryCommand
                     (
-                        commandText: "UPDATE cardioLogs SET description = @description, routine = @routine, creation_date = @creation_date, video = @video, type = @type, @modality = modality WHERE  id = @id, name = @name",
+                        commandText: "UPDATE fitness_prgrm SET description = @description, routine = @routine, creation_date = @creation_date, inst_vid = @video, training_type = @type, exercise_modality = @modality WHERE  instructor_authorId = @id, name = @name",
                         parameters: new Dictionary<string, object>()
                         {
                             { "@id", id },
@@ -214,7 +215,7 @@ namespace DatabaseLibrary.Helpers
                         },
                         message: out string message
                     );
-                statusResponse = new StatusResponse("Fitness Program has been removed successfully.");
+                statusResponse = new StatusResponse("Fitness Program has been editted successfully.");
                 return null;
             }
             catch (Exception exception)

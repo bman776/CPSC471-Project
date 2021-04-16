@@ -1,3 +1,4 @@
+using Nest;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -5,7 +6,7 @@ using System.Text;
 
 namespace BusinessLibrary.Models
 {
-	class ExerciseSet
+	public class ExerciseSet
     {
         #region Contructors
 
@@ -20,12 +21,12 @@ namespace BusinessLibrary.Models
         /// <summary>
         /// Fields constructor.
         /// </summary>
-        public ExerciseSet(int id, DateTime date, TimeSpan time, int caloriesBurned, string type, int reps, int setNumber)
+        public ExerciseSet(int id, DateTime date, TimeSpan time, int weight, string type, int reps, int setNumber)
         {
             Id = id;
             Date = date;
             Time = time;
-            CaloriesBurned = caloriesBurned;
+            Weight = weight;
             Type = type;
             Reps = reps;
             SetNumber = setNumber;
@@ -37,7 +38,7 @@ namespace BusinessLibrary.Models
         /// </summary>
         /// <param name="instance">The object to clone from.</param>
         public ExerciseSet(ExerciseSet instance)
-            : this(instance.Id, instance.Date, instance.Time, instance.CaloriesBurned, instance.Type, instance.Reps, instance.SetNumber)
+            : this(instance.Id, instance.Date, instance.Time, instance.Weight, instance.Type, instance.Reps, instance.SetNumber)
         {
         }
 
@@ -66,8 +67,8 @@ namespace BusinessLibrary.Models
         /// <summary>
         /// Instructor's training type
         /// </summary>
-        [JsonProperty(PropertyName = "caloriesBurned")]
-        public int CaloriesBurned { get; set; }
+        [JsonProperty(PropertyName = "weight")]
+        public int Weight { get; set; }
 
         [JsonProperty(PropertyName = "type")]
         public string Type { get; set; }

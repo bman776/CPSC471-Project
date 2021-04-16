@@ -90,16 +90,19 @@ namespace Webservice.ControllerHelpers
             return response;
         }
 
-        public static ResponseMessage GetCardioLog(int id, DateTime date, TimeSpan time,
+        public static ResponseMessage GetCardioLog(JObject data,
             DbContext context, out HttpStatusCode statusCode, bool includeDetailedErrors = false)
         {
 
-            var dbInstance = DatabaseLibrary.Helpers.ClientHelper_db.GetCardioLog(int id, DateTime date, TimeSpan time,
+            int id = (data.ContainsKey("id")) ? data.GetValue("id").Value<int>() : 0;
+            DateTime date = (data.ContainsKey("date")) ? data.GetValue("date").Value<DateTime>() : DateTime.MinValue;
+            TimeSpan time = (data.ContainsKey("time")) ? data.GetValue("time").Value<TimeSpan>() : 0;
+            var dbInstance = DatabaseLibrary.Helpers.CardioLogHelper_db.GetCardioLog(id, date, time,
                 context, out StatusResponse statusResponse);
 
             var instances = dbInstances?.Select(x => Convert(x)).ToList();
 
-            se.StatusCode == HttpStatusCode.InternalServerError
+            if (statusResponse.StatusCode == HttpStatusCode.InternalServerError
                 && !includeDetailedErrors)
                 statusResponse.Message = "Something went wrong while retrieving the cardio log";
 
@@ -114,15 +117,18 @@ namespace Webservice.ControllerHelpers
             return response;
         }
 
-        public static ResponseMessage RemoveCardioLog(int id, DateTime date, TimeSpan time,
+        public static ResponseMessage RemoveCardioLog(JObject data,
             DbContext context, out HttpStatusCode statusCode, bool includeDetailedErrors = false)
         {
-            var dbInstance = DatabaseLibrary.Helpers.ClientHelper_db.DeleteCardioLog(int id, DateTime date, TimeSpan time,
+            int id = (data.ContainsKey("id")) ? data.GetValue("id").Value<int>() : 0;
+            DateTime date = (data.ContainsKey("date")) ? data.GetValue("date").Value<DateTime>() : DateTime.MinValue;
+            TimeSpan time = (data.ContainsKey("time")) ? data.GetValue("time").Value<TimeSpan>() : 0;
+            var dbInstance = DatabaseLibrary.Helpers.CardioLogHelper_db.DeleteCardioLog(id, date, time,
                 context, out StatusResponse statusResponse);
 
             var instances = dbInstances?.Select(x => Convert(x)).ToList();
 
-            se.StatusCode == HttpStatusCode.InternalServerError
+            if (statusResponse.StatusCode == HttpStatusCode.InternalServerError
                 && !includeDetailedErrors)
                 statusResponse.Message = "Something went wrong while removing the cardio log";
 
@@ -136,15 +142,20 @@ namespace Webservice.ControllerHelpers
             return response;
         }
 
-        public static ResponseMessage EditCardioLog(int id, string name, DateTime date, TimeSpan startTime, TimeSpan endTime, int caloriesBurned, string exerciseType,
+        public static ResponseMessage EditCardioLog(JObject data,
             DbContext context, out HttpStatusCode statusCode, bool includeDetailedErrors = false)
         {
-            var dbInstance = DatabaseLibrary.Helpers.ClientHelper_db.EditCardioLog(int id, string name, DateTime date, TimeSpan startTime, TimeSpan endTime, int caloriesBurned, string exerciseType,
+            int id = (data.ContainsKey("id")) ? data.GetValue("id").Value<int>() : 0.0;
+            DateTime logDate = (data.ContainsKey("logDate")) ? data.GetValue("logDate").Value<DateTime>() : DateTime.MinValue;
+            TimeSpan time = (data.ContainsKey("time")) ? data.GetValue("time").Value<TimeSpan>() : null;
+            int caloriesBurned = (data.ContainsKey("caloriesBurned")) ? data.GetValue("caloriesBurned").Value<int>() : 0.0;
+            string cardioType = (data.ContainsKey("cardioType")) ? data.GetValue("cardioType").Value<string>() : null;
+            var dbInstance = DatabaseLibrary.Helpers.CardioLogHelper_db.EditCardioLog(id, name, date, startTime, endTime, caloriesBurned, exerciseType,
                 context, out StatusResponse statusResponse);
 
             var instances = dbInstances?.Select(x => Convert(x)).ToList();
 
-            se.StatusCode == HttpStatusCode.InternalServerError
+            if (statusResponse.StatusCode == HttpStatusCode.InternalServerError
                 && !includeDetailedErrors)
                 statusResponse.Message = "Something went wrong while editting the cardio log";
 
